@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Matiss\\Documents\\Accelerator\\Accelerator.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Matiss\\Documents\\Accelerator\\Accelerator.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matiss\\Documents\\Accelerator\\Accelerator.csproj",
+        "projectName": "Accelerator",
+        "projectPath": "C:\\Users\\Matiss\\Documents\\Accelerator\\Accelerator.csproj",
+        "packagesPath": "C:\\Users\\Matiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matiss\\Documents\\Accelerator\\.mono\\temp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Users\\Matiss\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Matiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Matiss\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

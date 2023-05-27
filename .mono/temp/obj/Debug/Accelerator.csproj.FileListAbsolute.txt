@@ -1,0 +1,9 @@
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\bin\Debug\Accelerator.dll
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\bin\Debug\Accelerator.pdb
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.csproj.AssemblyReference.cache
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.AssemblyInfoInputs.cache
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.AssemblyInfo.cs
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.csproj.CoreCompileInputs.cache
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.dll
+C:\Users\Matiss\Documents\Accelerator\.mono\temp\obj\Debug\Accelerator.pdb
