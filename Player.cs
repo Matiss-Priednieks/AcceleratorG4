@@ -6,19 +6,16 @@ public partial class Player : CharacterBody3D
 
     [Export(PropertyHint.Range, "0.01,5,")] float MouseSensitivity = 1.0f;
     public float Speed = 30;
-    Timer spawnTimer;
     bool GameOver = false;
     public override void _Ready()
     {
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        spawnTimer = GetNode<Timer>("%SpawnTimer");
         GetNode<Panel>("%GameOver").Hide();
     }
 
     public override void _Process(double delta)
     {
         Math.Round(MouseSensitivity, 2);
-        spawnTimer.WaitTime = 60 * (1 / Speed);
         GetNode<Panel>("%Score").GetNode<Label>("Label").Text = Speed.ToString();
     }
 

@@ -21,9 +21,11 @@ public partial class SegmentSpawner : Node3D
     int randomKey = 0;
     Player Player;
     float SpawnTime = 2f;
+    public List<Node3D> InstanceList;
 
     public override void _Ready()
     {
+        InstanceList = new List<Node3D>();
         GD.Randomize();
         rng = new RandomNumberGenerator();
         rng.Randomize();
@@ -42,7 +44,20 @@ public partial class SegmentSpawner : Node3D
     }
     public override void _Process(double delta)
     {
-        // testFunction();
+        if (InstanceList.Count < 4)
+        {
+            GD.Print(InstanceList.Count);
+            SpawnSegment();
+        }
+        if (Player.Position.Z < -10000)
+        {
+            foreach (Node3D child in InstanceList)
+            {
+                child.Position += new Vector3(0, 0, 10000);
+            }
+            Player.Position += new Vector3(0, 0, 10000);
+            addedDistance = lastKey == 2 ? new Vector3(0, 0, -160) : new Vector3(0, 0, -100);
+        }
     }
 
     public PackedScene ChooseSegment()
@@ -77,27 +92,16 @@ public partial class SegmentSpawner : Node3D
             addedDistance.Z += -100;
         }
         SegmentInstance.Position += addedDistance;
+        GD.Print(addedDistance);
 
+        if (SegmentInstance.Position.DistanceTo(Player.Position) < 500)
+        {
+            InstanceList.Add(SegmentInstance);
+            AddChild(SegmentInstance);
+            lastKey = randomKey;
+        }
 
-        AddChild(SegmentInstance);
-
-        lastKey = randomKey;
     }
 
-    // implementation that doesn't work, similar idea might work but this just creates a large amount of segments in a very short amount of time and crashes the game
-    // public async void testFunction()
-    // {
-    //     await ToSignal(GetTree().CreateTimer(SpawnTime), SceneTreeTimer.SignalName.Timeout);
-    //     SpawnTime = Player.Speed % 25 == 0 ? SpawnTime - 0.1f : SpawnTime;
-    //     GD.Print(SpawnTime);
-    //     System.Threading.Thread t = new System.Threading.Thread(new ThreadStart(SpawnSegment));
-    //     t.Start();
-    // }
-    public void _on_spawn_timer_timeout()
-    {
-        // CallDeferred("SpawnSegment");
-        System.Threading.Thread t = new System.Threading.Thread(new ThreadStart(SpawnSegment));
-        t.Start();
-    }
 
 }

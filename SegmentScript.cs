@@ -9,6 +9,8 @@ public partial class SegmentScript : Node3D
         {
             if (pBody.Speed > 100)
             {
+                SegmentSpawner parent = (SegmentSpawner)GetParent();
+                parent.InstanceList.Remove((Node3D)parent.GetChild(0));
                 QueueFree();
                 GD.Print("killed");
             }
@@ -16,6 +18,8 @@ public partial class SegmentScript : Node3D
             {
                 GD.Print("start");
                 await ToSignal(GetTree().CreateTimer(pBody.Speed / (1.5f * pBody.Speed)), SceneTreeTimer.SignalName.Timeout);
+                SegmentSpawner parent = (SegmentSpawner)GetParent();
+                parent.InstanceList.Remove((Node3D)parent.GetChild(0));
                 QueueFree();
                 GD.Print("end");
             }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=10 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://Player.cs" id="3"]
 [ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="3_el652"]
@@ -9,7 +9,8 @@
 background_mode = 1
 tonemap_mode = 1
 glow_enabled = true
-glow_intensity = 2.0
+glow_intensity = 2.33
+glow_bloom = 0.13
 glow_hdr_threshold = 0.19
 glow_hdr_luminance_cap = 65.64
 fog_enabled = true
@@ -22,7 +23,13 @@ adjustment_saturation = 1.5
 [sub_resource type="SphereShape3D" id="2"]
 radius = 2.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3rso"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 1.35
+
 [sub_resource type="SphereMesh" id="3"]
+material = SubResource("StandardMaterial3D_f3rso")
 radius = 2.0
 height = 4.0
 
@@ -43,8 +50,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 script = ExtResource("3")
 MouseSensitivity = 0.555
 
-[node name="Camera3D" type="Camera3D" parent="Player"]
+[node name="FP" type="Camera3D" parent="Player"]
 doppler_tracking = 2
+current = true
 near = 0.03
 far = 400.0
 
@@ -58,13 +66,13 @@ mesh = SubResource("3")
 unique_name_in_owner = true
 stream = ExtResource("3_qq5em")
 
+[node name="TP" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.984829, 0.173528, 0, -0.173528, 0.984829, 0, 3.46998, 13.875)
+visible = false
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 106.474, 0)
 light_color = Color(0.682353, 0.678431, 1, 1)
-
-[node name="SpawnTimer" type="Timer" parent="."]
-unique_name_in_owner = true
-autostart = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -139,5 +147,3 @@ offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Score Here"
-
-[connection signal="timeout" from="SpawnTimer" to="SegmentSpawner" method="_on_spawn_timer_timeout"]
