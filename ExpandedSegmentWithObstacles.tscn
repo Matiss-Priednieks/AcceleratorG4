@@ -89,10 +89,11 @@ attenuation_filter_cutoff_hz = 10000.0
 doppler_tracking = 2
 
 [node name="MiddleBeam" type="StaticBody3D" parent="." index="4"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("4_qqs7b")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MiddleBeam" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_g1s8o")
 skeleton = NodePath("../..")
 

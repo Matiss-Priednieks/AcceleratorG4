@@ -11,6 +11,6 @@ public partial class MiddleBeam : StaticBody3D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		
+		RotateZ(1 * (float)delta);
 	}
 }

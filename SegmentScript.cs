@@ -12,16 +12,16 @@ public partial class SegmentScript : Node3D
 				SegmentSpawner parent = (SegmentSpawner)GetParent();
 				parent.InstanceList.Remove((Node3D)parent.GetChild(0));
 				QueueFree();
-				GD.Print("killed");
+				// GD.Print("killed");
 			}
 			else
 			{
-				GD.Print("start");
+				// GD.Print("start");
 				await ToSignal(GetTree().CreateTimer(pBody.Speed / (1.5f * pBody.Speed)), SceneTreeTimer.SignalName.Timeout);
 				SegmentSpawner parent = (SegmentSpawner)GetParent();
 				parent.InstanceList.Remove((Node3D)parent.GetChild(0));
 				QueueFree();
-				GD.Print("end");
+				// GD.Print("end");
 			}
 		}
 	}
