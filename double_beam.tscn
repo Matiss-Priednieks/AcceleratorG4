@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://ca8p6kgmuud0u"]
+
+[ext_resource type="Script" path="res://Beam.cs" id="1_qtrxe"]
+[ext_resource type="Material" uid="uid://d0v7rfoshwye1" path="res://Obstacle.tres" id="2_fxfnc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uperv"]
+material = ExtResource("2_fxfnc")
+size = Vector3(100, 50, 5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vfruo"]
+points = PackedVector3Array(-50.7837, -25.7937, -3.29303, 50.7837, 26.5873, 3.05493, 50.7837, 26.5873, -3.29303, -50.7837, 26.5873, 3.05493, 50.7837, -25.7937, 3.05493, 50.7837, -25.7937, -3.29303, -50.7837, 26.5873, -3.29303, -50.7837, -25.7937, 3.05493)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_v8imv"]
+points = PackedVector3Array(-50.7837, -25.7937, -3.29303, 50.7837, 26.5873, 3.05493, 50.7837, 26.5873, -3.29303, -50.7837, 26.5873, 3.05493, 50.7837, -25.7937, 3.05493, 50.7837, -25.7937, -3.29303, -50.7837, 26.5873, -3.29303, -50.7837, -25.7937, 3.05493)
+
+[node name="DoubleBeam" type="StaticBody3D"]
+script = ExtResource("1_qtrxe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -40, 0)
+mesh = SubResource("BoxMesh_uperv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.95, 0, 0, 0, 0.95, 0, 0, 0, 0.95, 0, -40, 0)
+shape = SubResource("ConvexPolygonShape3D_vfruo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
+mesh = SubResource("BoxMesh_uperv")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.95, 0, 0, 0, 0.95, 0, 0, 0, 0.95, 0, 40, 0)
+shape = SubResource("ConvexPolygonShape3D_v8imv")

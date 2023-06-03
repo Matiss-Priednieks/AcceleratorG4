@@ -9,7 +9,7 @@ using System.Threading;
 
 public partial class SegmentSpawner : Node3D
 {
-    PackedScene CircleSegment, LineSegment, ExpandedSegment, LargeObstacleSegment;
+    PackedScene CircleSegment, CircleWithObstacle, LineSegment, ExpandedSegment, LargeObstacleSegment;
     RandomNumberGenerator rng;
 
     Dictionary SegmentDict;
@@ -32,15 +32,18 @@ public partial class SegmentSpawner : Node3D
         rng = new RandomNumberGenerator();
         rng.Randomize();
         CircleSegment = ResourceLoader.Load<PackedScene>("res://CirclesSegmentWithAudio.tscn");
+        CircleWithObstacle = ResourceLoader.Load<PackedScene>("res://CirclesSegmentWithObstacles.tscn");
         LineSegment = ResourceLoader.Load<PackedScene>("res://LinesSegment.tscn");
         ExpandedSegment = ResourceLoader.Load<PackedScene>("res://ExpandedSegmentWithAudio.tscn");
         LargeObstacleSegment = ResourceLoader.Load<PackedScene>("res://ExpandedSegmentWithObstacles.tscn");
         SegmentDict = new Dictionary();
 
         SegmentDict.Add(1, (PackedScene)CircleSegment);
-        SegmentDict.Add(2, (PackedScene)LineSegment);
-        SegmentDict.Add(3, (PackedScene)ExpandedSegment);
-        SegmentDict.Add(4, (PackedScene)LargeObstacleSegment);
+        SegmentDict.Add(2, (PackedScene)CircleWithObstacle);
+        SegmentDict.Add(3, (PackedScene)LineSegment);
+        SegmentDict.Add(4, (PackedScene)LineSegment);
+        SegmentDict.Add(5, (PackedScene)ExpandedSegment);
+        SegmentDict.Add(6, (PackedScene)LargeObstacleSegment);
         keyArray = new Godot.Collections.Array(SegmentDict.Keys);
         CallDeferred("SpawnSegment");
         Player = GetNode<Player>("%Player");
@@ -48,28 +51,30 @@ public partial class SegmentSpawner : Node3D
     }
     public override void _Process(double delta)
     {
-        if (InstanceList.Count < 4)
+        if (InstanceList.Count < 8)
         {
-            // GD.Print(InstanceList.Count);
             SpawnSegment();
             Moved = false;
         }
-        if (Player.Position.Z < -10000)
-        {
-            foreach (Node3D child in InstanceList)
-            {
-                child.Position += new Vector3(0, 0, 10000);
-            }
-            Player.Position += new Vector3(0, 0, 10000);
-            addedDistance = LastKey == 2 ? new Vector3(0, 0, -160) : new Vector3(0, 0, -100);
-        }
+        // if (Player.Position.Z < -10000)
+        // {
+        //     foreach (Node3D child in InstanceList)
+        //     {
+        //         if (child != null)
+        //         {
+        //             child.Position += new Vector3(0, 0, 10000);
+        //         }
+        //     }
+        //     Player.Position += new Vector3(0, 0, 10000);
+        //     addedDistance = LastKey == 2 ? new Vector3(0, 0, -160) : new Vector3(0, 0, -100);
+        // }
     }
 
     public PackedScene ChooseSegment()
     {
         GD.Randomize();
 
-        NextKey = rng.RandiRange(0, 3);
+        NextKey = rng.RandiRange(0, 5);
 
 
         if (LastKey != NextKey)
@@ -81,7 +86,7 @@ public partial class SegmentSpawner : Node3D
         {
             do
             {
-                NextKey = rng.RandiRange(0, 3);
+                NextKey = rng.RandiRange(0, 5);
             } while (LastKey == NextKey);
             var nextSeg = SegmentDict[keyArray[NextKey]];
             return (PackedScene)nextSeg;
@@ -95,24 +100,24 @@ public partial class SegmentSpawner : Node3D
         if (!Moved)
         {
             // SegmentInstance.Position += addedDistance;
-            if (LastKey >= 2 && NextKey >= 2)
+            if (LastKey >= 4 && NextKey >= 4)
             {
                 GD.Print("big into big: " + LastKey + ", " + NextKey);
                 addedDistance.Z += -320;
                 SegmentInstance.Position += new Vector3(LastSegPosition.X, LastSegPosition.Y, LastSegPosition.Z - 220);
             }
-            else if (LastKey >= 2 && NextKey <= 1)
+            else if (LastKey >= 4 && NextKey <= 3)
             {
 
                 GD.Print("big into small: " + LastKey + ", " + NextKey);
                 SegmentInstance.Position += new Vector3(LastSegPosition.X, LastSegPosition.Y, LastSegPosition.Z - 160);
             }
-            else if (LastKey <= 1 && NextKey <= 1)
+            else if (LastKey <= 3 && NextKey <= 3)
             {
                 GD.Print("small into small: " + LastKey + ", " + NextKey);
                 SegmentInstance.Position += new Vector3(LastSegPosition.X, LastSegPosition.Y, LastSegPosition.Z - 100);
             }
-            else if (LastKey <= 1 && NextKey >= 2)
+            else if (LastKey <= 3 && NextKey >= 4)
             {
                 GD.Print("small into big: " + LastKey + ", " + NextKey);
                 SegmentInstance.Position += new Vector3(LastSegPosition.X, LastSegPosition.Y, LastSegPosition.Z - 160);
@@ -130,13 +135,6 @@ public partial class SegmentSpawner : Node3D
 
         LastKey = NextKey;
         LastSegPosition = SegmentInstance.Position;
-
-
-        // GD.Print(SegmentInstance.Position.DistanceTo(Player.Position));
-        // else
-        // {
-        //     addedDistance.Z = Player.Position.Z;
-        // }
 
     }
 

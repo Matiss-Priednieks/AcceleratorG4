@@ -21,7 +21,6 @@ adjustment_brightness = 1.36
 adjustment_saturation = 1.5
 
 [sub_resource type="SphereShape3D" id="2"]
-radius = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3rso"]
 emission_enabled = true
