@@ -37,6 +37,10 @@ public partial class Beam : StaticBody3D
             {
                 RotateZ(1 * (float)delta);
             }
+            if (Enabled && this.Name == "QuadBeam")
+            {
+                //todo: use path node to make quads move.
+            }
         }
         else
         {

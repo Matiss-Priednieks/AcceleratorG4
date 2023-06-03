@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxyemj8t8sgf"]
+[gd_scene load_steps=13 format=3 uid="uid://bxyemj8t8sgf"]
 
 [ext_resource type="PackedScene" uid="uid://18nwqaehiecd" path="res://Assets/expandedsectiononepiece.glb" id="1_doowy"]
 [ext_resource type="Script" path="res://SegmentScript.cs" id="2_ammvd"]
@@ -16,16 +16,13 @@ data = PackedVector3Array(-12.0124, 12.0124, -110, 0, 42.4702, -90, 0, 16.9881, 
 
 [sub_resource type="BoxMesh" id="BoxMesh_b3gm4"]
 material = ExtResource("5_t1fpm")
-size = Vector3(25, 25, 5)
+size = Vector3(50, 50, 5)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cmxwf"]
-points = PackedVector3Array(-11.7891, -11.7891, -2.5, 12.6959, 12.6959, 2.85714, 12.6959, -12.6959, 2.85714, -12.6959, 12.6959, 2.85714, 11.7891, 11.7891, -2.5, -12.6959, -12.6959, 2.85714, 11.7891, -11.7891, -2.5, -11.7891, 11.7891, -2.5)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tkyf3"]
+points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5, 23.9451, -23.9409, 2.5, 25.3963, 25.3919, -2.89683, -23.9456, 23.9409, 2.5, 25.3963, -25.3919, -2.89683, -25.3968, 25.3919, -2.89683, -23.9456, -23.9409, 2.5)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_k7534"]
-points = PackedVector3Array(-11.7891, -11.7891, -2.5, 12.6959, 12.6959, 2.85714, 12.6959, -12.6959, 2.85714, -12.6959, 12.6959, 2.85714, 11.7891, 11.7891, -2.5, -12.6959, -12.6959, 2.85714, 11.7891, -11.7891, -2.5, -11.7891, 11.7891, -2.5)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_j6sry"]
-points = PackedVector3Array(-11.7891, -11.7891, -2.5, 12.6959, 12.6959, 2.85714, 12.6959, -12.6959, 2.85714, -12.6959, 12.6959, 2.85714, 11.7891, 11.7891, -2.5, -12.6959, -12.6959, 2.85714, 11.7891, -11.7891, -2.5, -11.7891, 11.7891, -2.5)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4cgti"]
+points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5, 23.9451, -23.9409, 2.5, 25.3963, 25.3919, -2.89683, -23.9456, 23.9409, 2.5, 25.3963, -25.3919, -2.89683, -25.3968, 25.3919, -2.89683, -23.9456, -23.9409, 2.5)
 
 [node name="expandedsectiononepiece" instance=ExtResource("1_doowy")]
 script = ExtResource("2_ammvd")
@@ -98,41 +95,27 @@ visible = false
 [node name="DoubleBeam" parent="." index="5" instance=ExtResource("5_x8563")]
 visible = false
 
-[node name="QuadBeam" type="Node3D" parent="." index="6"]
+[node name="QuadBeam" type="StaticBody3D" parent="." index="6"]
 script = ExtResource("6_e8jpw")
 
 [node name="Part1" type="StaticBody3D" parent="QuadBeam" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, -25, 0)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="QuadBeam/Part1" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_b3gm4")
-skeleton = NodePath("../../Part3/MeshInstance3D")
+skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="QuadBeam/Part1" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_cmxwf")
+shape = SubResource("ConvexPolygonShape3D_tkyf3")
 
 [node name="Part2" type="StaticBody3D" parent="QuadBeam" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 25, 0)
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="QuadBeam/Part2" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_b3gm4")
 skeleton = NodePath("../../Part1/MeshInstance3D2")
 
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="QuadBeam/Part2" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_k7534")
-
-[node name="Part3" type="StaticBody3D" parent="QuadBeam" index="2"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="QuadBeam/Part3" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_b3gm4")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="QuadBeam/Part3" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_j6sry")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="QuadBeam/Part2" index="1"]
+shape = SubResource("ConvexPolygonShape3D_4cgti")
 
 [connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]
