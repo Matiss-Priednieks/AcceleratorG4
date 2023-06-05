@@ -19,7 +19,9 @@ public partial class SegmentScript : Node3D
                 ChosenBeam = "QuadBeam";
                 break;
             case 3:
-                ChosenBeam = "HoleBeam";
+                // ChosenBeam = "HoleBeam";
+                ChosenBeam = "QuadBeam";
+                // ChosenBeam = "None";
                 break;
             case 4:
                 ChosenBeam = "None";
@@ -31,6 +33,7 @@ public partial class SegmentScript : Node3D
                 ChosenBeam = "None";
                 break;
         }
+        GD.Print(ChosenBeam);
         if (ChosenBeam != "None")
         {
             Beam beam = GetNode<Beam>(ChosenBeam);
