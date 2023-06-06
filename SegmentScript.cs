@@ -37,7 +37,10 @@ public partial class SegmentScript : Node3D
         if (ChosenBeam != "None")
         {
             Beam beam = GetNode<Beam>(ChosenBeam);
-            beam.Enabled = true;
+            if (beam != null)
+            {
+                beam.Enabled = true;
+            }
         }
     }
     public async void _on_Area_body_exited(CharacterBody3D body)

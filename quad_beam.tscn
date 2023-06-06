@@ -21,6 +21,9 @@ points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5,
 points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5, 23.9451, -23.9409, 2.5, 25.3963, 25.3919, -2.89683, -23.9456, 23.9409, 2.5, 25.3963, -25.3919, -2.89683, -25.3968, 25.3919, -2.89683, -23.9456, -23.9409, 2.5)
 
 [node name="QuadBeam" type="StaticBody3D"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_mbju3")
 
 [node name="Path3D" type="Path3D" parent="."]
@@ -47,7 +50,7 @@ curve = SubResource("Curve3D_3lkht")
 
 [node name="Part2" type="PathFollow3D" parent="Path3D2"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.67029e-05, 2.67029e-05, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.72205e-05, -5.72205e-05, 0)
 progress = 100.0
 h_offset = -25.0
 v_offset = -25.0

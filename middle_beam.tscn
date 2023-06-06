@@ -7,8 +7,8 @@
 material = ExtResource("2_1bsc3")
 size = Vector3(100, 25, 5)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0e4ra"]
-points = PackedVector3Array(-50.7837, -13.2937, -3.29303, 50.7837, 13.6905, 3.05493, 50.7837, 13.6905, -3.29303, -50.7837, 13.6905, 3.05493, 50.7837, -13.2937, 3.05493, 50.7837, -13.2937, -3.29303, -50.7837, 13.6905, -3.29303, -50.7837, -13.2937, 3.05493)
+[sub_resource type="BoxShape3D" id="BoxShape3D_e1dcn"]
+size = Vector3(100, 25, 5)
 
 [node name="MiddleBeam" type="StaticBody3D"]
 collision_layer = 2
@@ -20,5 +20,4 @@ mesh = SubResource("BoxMesh_g1s8o")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_0e4ra")
+shape = SubResource("BoxShape3D_e1dcn")

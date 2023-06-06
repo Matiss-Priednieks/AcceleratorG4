@@ -21,8 +21,11 @@ public partial class Beam : StaticBody3D
     {
         Part1 = GetNode<PathFollow3D>("%Part1");
         Part2 = GetNode<PathFollow3D>("%Part2");
-        Part1.Progress = 0;
-        Part2.Progress = 0.5f;
+        if (Part1 != null || Part2 != null)
+        {
+            Part1.ProgressRatio = 0;
+            Part2.ProgressRatio = 0.5f;
+        }
         CurrentPosition = Position;
         OutSidePosition = CurrentPosition + new Vector3(0, 2000, 0);
         var rot = RotationDegrees;
@@ -68,7 +71,10 @@ public partial class Beam : StaticBody3D
 
     public void MoveQuads(double delta)
     {
-        Part1.Progress += MoveSpeed * (float)delta;
-        Part2.Progress += MoveSpeed * (float)delta;
+        if (Part1 != null || Part2 != null)
+        {
+            Part1.Progress += MoveSpeed * (float)delta;
+            Part2.Progress += MoveSpeed * (float)delta;
+        }
     }
 }
