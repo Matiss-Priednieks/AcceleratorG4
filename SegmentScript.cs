@@ -20,8 +20,7 @@ public partial class SegmentScript : Node3D
                 break;
             case 3:
                 // ChosenBeam = "HoleBeam";
-                ChosenBeam = "QuadBeam";
-                // ChosenBeam = "None";
+                ChosenBeam = "None";
                 break;
             case 4:
                 ChosenBeam = "None";

@@ -29,10 +29,8 @@ public partial class Beam : StaticBody3D
         CurrentPosition = Position;
         OutSidePosition = CurrentPosition + new Vector3(0, 2000, 0);
         var rot = RotationDegrees;
-        if (this.Name != "QuadBeam")
-        {
-            rot.Z += (GD.Randf() * 360);
-        }
+
+        rot.Z += (GD.Randf() * 360);
         RotationDegrees = rot;
     }
 
@@ -45,7 +43,7 @@ public partial class Beam : StaticBody3D
             {
                 Index += (float)delta;
                 float y = Amplitutde * Mathf.Sin(Omega * Index);
-                Position = new Vector3(0, y, 0);
+                GetNode<StaticBody3D>("%DoubleBeamPivot").Position = new Vector3(0, y, 0);
             }
             if (this.Name == "MiddleBeam")
             {

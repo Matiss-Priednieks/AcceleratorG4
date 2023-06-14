@@ -50,7 +50,7 @@ curve = SubResource("Curve3D_3lkht")
 
 [node name="Part2" type="PathFollow3D" parent="Path3D2"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.72205e-05, -5.72205e-05, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.67029e-05, 2.67029e-05, 0)
 progress = 100.0
 h_offset = -25.0
 v_offset = -25.0
