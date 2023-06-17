@@ -13,6 +13,7 @@ data = PackedVector3Array(-18.8508, 0.25, 13.6963, -18.8508, -0.25, 12.956, -18.
 script = ExtResource("2")
 
 [node name="Area3D" type="Area3D" parent="." index="0"]
+transform = Transform3D(2.35811, 0, 0, 0, 2.26934, 0, 0, 0, 2.27637, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
 shape = SubResource("2")

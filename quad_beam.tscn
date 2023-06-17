@@ -37,6 +37,8 @@ rotation_mode = 0
 
 [node name="Part1" type="StaticBody3D" parent="Path3D/Part1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, -25, 0)
+collision_layer = 2
+collision_mask = 2
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Path3D/Part1/Part1"]
 mesh = SubResource("BoxMesh_b3gm4")
@@ -58,6 +60,8 @@ rotation_mode = 0
 
 [node name="Part2" type="StaticBody3D" parent="Path3D2/Part2"]
 transform = Transform3D(1, 0, 0, 0, 1, 8.35187e-23, 0, 8.35187e-23, 1, 25, 25, 0)
+collision_layer = 2
+collision_mask = 2
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Path3D2/Part2/Part2"]
 mesh = SubResource("BoxMesh_b3gm4")

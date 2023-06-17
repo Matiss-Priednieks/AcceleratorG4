@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="AcceleratorG4"
-run/main_scene="res://SegmentCircles.tscn"
+run/main_scene="res://Gameplay.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [dotnet]
 

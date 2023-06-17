@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b3p070viume5y" path="res://quad_beam.tscn" id="6_npl8a"]
 
 [sub_resource type="BoxShape3D" id="2"]
-size = Vector3(100, 100, 220)
+size = Vector3(100, 100, 249.013)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mc02q"]
 resource_name = "Material.004"

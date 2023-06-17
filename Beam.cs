@@ -19,8 +19,11 @@ public partial class Beam : StaticBody3D
 
     public override void _Ready()
     {
-        Part1 = GetNode<PathFollow3D>("%Part1");
-        Part2 = GetNode<PathFollow3D>("%Part2");
+        if (this.Name == "QuadBeam")
+        {
+            Part1 = GetNode<PathFollow3D>("%Part1");
+            Part2 = GetNode<PathFollow3D>("%Part2");
+        }
         if (Part1 != null || Part2 != null)
         {
             Part1.ProgressRatio = 0;
