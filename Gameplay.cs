@@ -13,6 +13,8 @@ public partial class Gameplay : Node3D
     private string RegistrationPassword;
     private string RegistrationPasswordConfirmation;
 
+    Player PlayerObj;
+    float Sensitivity = 0.01f;
 
     Panel GameMenu;
     Panel SettingsMenu;
@@ -20,7 +22,8 @@ public partial class Gameplay : Node3D
     Panel Registration;
     public override void _Ready()
     {
-        Input.MouseMode = Input.MouseModeEnum.Confined;
+        PlayerObj = GetNode<Player>("%Player");
+        Input.MouseMode = Input.MouseModeEnum.Visible;
         GameMenu = GetNode<Panel>("%Menu");
         SettingsMenu = GetNode<Panel>("%SettingsMenu");
         LoginScreen = GetNode<Panel>("%LoginScreen");
@@ -34,7 +37,7 @@ public partial class Gameplay : Node3D
         if (Menu)
         {
             GameMenu.Show();
-            Input.MouseMode = Input.MouseModeEnum.Confined;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
         }
         else
         {
@@ -44,7 +47,7 @@ public partial class Gameplay : Node3D
         if (Settings)
         {
             SettingsMenu.Show();
-            Input.MouseMode = Input.MouseModeEnum.Confined;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
         }
         else
         {
@@ -54,7 +57,7 @@ public partial class Gameplay : Node3D
         if (Login)
         {
             LoginScreen.Show();
-            Input.MouseMode = Input.MouseModeEnum.Confined;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
         }
         else
         {
@@ -64,7 +67,7 @@ public partial class Gameplay : Node3D
         if (Register)
         {
             Registration.Show();
-            Input.MouseMode = Input.MouseModeEnum.Confined;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
         }
         else
         {
@@ -117,6 +120,7 @@ public partial class Gameplay : Node3D
     public void _on_exit_pressed()
     {
         //exit game code here, todo
+        GetTree().Quit();
     }
     //Main Menu buttons end
 
@@ -150,5 +154,45 @@ public partial class Gameplay : Node3D
     public void _on_confirm_password_text_changed()
     {
         RegistrationPasswordConfirmation = GetNode<LineEdit>("%ConfirmPassword").Text;
+    }
+
+    public void _on_settingsback_pressed()
+    {
+        Playing = false;
+        Menu = true;
+        Login = false;
+        Register = false;
+        Settings = false;
+    }
+    public void _on_sensitivity_button_pressed()
+    {
+        GetNode<VBoxContainer>("%SensitivityMenu").Show();
+        GetNode<VBoxContainer>("%ButtonBox").Hide();
+    }
+    public void _on_sens_slider_value_changed(float newSens)
+    {
+        Sensitivity = newSens;
+        GetNode<SpinBox>("%SensInput").Value = newSens;
+        PlayerObj.MouseSensitivity = Sensitivity;
+    }
+
+    public void _on_sens_text_input_focus_exited(float newSens)
+    {
+        Sensitivity = newSens;
+        GetNode<Slider>("%SensSlider").Value = newSens;
+        PlayerObj.MouseSensitivity = Sensitivity;
+    }
+    public void _on_sens_back_pressed()
+    {
+        PlayerObj.MouseSensitivity = Sensitivity;
+        Playing = false;
+        Menu = false;
+        Login = false;
+        Register = false;
+        Settings = true;
+        GetNode<VBoxContainer>("%ButtonBox").Show();
+        GetNode<VBoxContainer>("%SensitivityMenu").Hide();
+
+
     }
 }

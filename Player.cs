@@ -4,7 +4,7 @@ using System;
 public partial class Player : CharacterBody3D
 {
 
-    [Export(PropertyHint.Range, "0.01,5,")] float MouseSensitivity = 0.1f;
+    [Export(PropertyHint.Range, "0.01,5,")] public float MouseSensitivity = 0.1f;
     public float Speed = 30;
     bool GameOver = false;
     Gameplay GameRef;

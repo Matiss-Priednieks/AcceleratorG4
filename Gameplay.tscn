@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=12 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
 [ext_resource type="Script" path="res://Player.cs" id="2_j827p"]
 [ext_resource type="AudioStream" uid="uid://bwexk5u8o8by2" path="res://Assets/Crash.wav" id="3_b7rs1"]
 [ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="4_v4org"]
+[ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 
 [sub_resource type="Environment" id="1"]
 background_mode = 1
@@ -239,6 +240,7 @@ grow_vertical = 2
 theme = ExtResource("4_v4org")
 
 [node name="ButtonBox" type="VBoxContainer" parent="CanvasLayer/UIContainer/SettingsMenu"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -281,8 +283,54 @@ layout_mode = 2
 theme = ExtResource("4_v4org")
 text = "Back"
 
+[node name="SensitivityMenu" type="VBoxContainer" parent="CanvasLayer/UIContainer/SettingsMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.5
+offset_top = -237.5
+offset_right = 199.5
+offset_bottom = 237.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+layout_mode = 2
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 30
+text = "Sensitivity"
+horizontal_alignment = 1
+
+[node name="SensInput" type="SpinBox" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.05
+alignment = 1
+
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.001
+max_value = 1.0
+step = 0.001
+value = 0.001
+
+[node name="SensBack" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+layout_mode = 2
+text = "Back"
+
 [node name="LoginScreen" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -334,6 +382,7 @@ text = "Login"
 
 [node name="Registration" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -427,11 +476,19 @@ text = "Have an account?"
 [node name="MainMenuCam" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.1394)
 
+[node name="sectionwithstraightlines" parent="." instance=ExtResource("6_lchth")]
+
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Login" to="." method="_on_login_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Signup" to="." method="_on_signup_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Sensitivity" to="." method="_on_sensitivity_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Back" to="." method="_on_settingsback_pressed"]
+[connection signal="focus_exited" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_focus_exited"]
+[connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensSlider" to="." method="_on_sens_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensBack" to="." method="_on_sens_back_pressed"]
 [connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Email" to="." method="_on_email_text_changed"]
 [connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Password" to="." method="_on_password_text_changed"]
 [connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="." method="_on_confirm_password_text_changed"]
