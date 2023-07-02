@@ -23,4 +23,8 @@ shape = SubResource("2")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cylinder001/StaticBody3D" index="0"]
 shape = SubResource("1")
 
+[node name="DespawnSafeguard" type="Timer" parent="." index="2"]
+unique_name_in_owner = true
+
 [connection signal="body_exited" from="Area3D" to="." method="_on_Area_body_exited"]
+[connection signal="timeout" from="DespawnSafeguard" to="." method="_on_despawn_safeguard_timeout"]

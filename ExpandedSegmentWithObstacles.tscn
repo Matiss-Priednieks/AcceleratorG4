@@ -150,4 +150,8 @@ visible = false
 [node name="QuadBeam" parent="." index="6" instance=ExtResource("6_npl8a")]
 visible = false
 
+[node name="DespawnSafeguard" type="Timer" parent="." index="7"]
+unique_name_in_owner = true
+
 [connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]
+[connection signal="timeout" from="DespawnSafeguard" to="." method="_on_despawn_safeguard_timeout"]

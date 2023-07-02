@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Threading;
+
 
 public partial class Gameplay : Node3D
 {
@@ -7,6 +9,7 @@ public partial class Gameplay : Node3D
     public bool Menu = true;
     public bool Settings = false;
     public bool Playing = false;
+    public bool GameOver = false;
     public bool Login = false;
     public bool Register = false;
     private string RegistrationEmail;
@@ -14,20 +17,23 @@ public partial class Gameplay : Node3D
     private string RegistrationPasswordConfirmation;
 
     Player PlayerObj;
+    SegmentSpawner SegmentSpawnerObj;
     float Sensitivity = 0.01f;
 
-    Panel GameMenu;
-    Panel SettingsMenu;
-    Panel LoginScreen;
-    Panel Registration;
+
+    Panel GameMenu, SettingsMenu, LoginScreen, Registration, GameOverPanel;
+    TextureRect Crosshair;
     public override void _Ready()
     {
         PlayerObj = GetNode<Player>("%Player");
+        SegmentSpawnerObj = GetNode<SegmentSpawner>("%SegmentSpawner");
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GameMenu = GetNode<Panel>("%Menu");
         SettingsMenu = GetNode<Panel>("%SettingsMenu");
         LoginScreen = GetNode<Panel>("%LoginScreen");
         Registration = GetNode<Panel>("%Registration");
+        Crosshair = GetNode<TextureRect>("%Crosshair");
+        GameOverPanel = GetNode<Panel>("%GameOver");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -76,11 +82,32 @@ public partial class Gameplay : Node3D
         //Playing
         if (Playing)
         {
+            Crosshair.Show();
             Input.MouseMode = Input.MouseModeEnum.Captured;
             GameMenu.Hide();
             SettingsMenu.Hide();
             LoginScreen.Hide();
             Registration.Hide();
+            GameOverPanel.Hide();
+            if (Input.IsActionJustReleased("Restart"))
+            {
+                Restart();
+            }
+        }
+        else
+        {
+            Crosshair.Hide();
+            if (GameOver)
+            {
+                GameOverPanel.Show();
+            }
+            if (GameOver && Input.IsActionJustReleased("MainMenu"))
+            {
+                Menu = true;
+                Playing = false;
+                GameMenu.Show();
+                GameOverPanel.Hide();
+            }
         }
     }
 
@@ -92,6 +119,21 @@ public partial class Gameplay : Node3D
         Login = false;
         Register = false;
         Settings = false;
+        if (GameOver)
+        {
+            Restart();
+        }
+        else
+        {
+            GameOver = false;
+        }
+    }
+    public void Restart()
+    {
+        //TODO: fix restart issue, restart after exiting first segment causes next segments to disappear.
+        SegmentSpawnerObj.Restart();
+        PlayerObj.Restart();
+        GameOver = false;
     }
     public void _on_settings_pressed()
     {

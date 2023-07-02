@@ -4,8 +4,12 @@ using System;
 public partial class SegmentScript : Node3D
 {
     string ChosenBeam;
+    public Timer DespawnSafeguard;
+    float PlayerSpeed;
     public override void _Ready()
     {
+        DespawnSafeguard = GetNode<Timer>("%DespawnSafeguard");
+        DespawnSafeguard.Stop();
         GD.Randomize();
         switch (Mathf.RoundToInt(GD.RandRange(0, 6)))
         {
@@ -32,7 +36,7 @@ public partial class SegmentScript : Node3D
                 ChosenBeam = "None";
                 break;
         }
-        GD.Print(ChosenBeam);
+        // GD.Print(ChosenBeam);
         if (ChosenBeam != "None")
         {
             Beam beam = GetNode<Beam>(ChosenBeam);
@@ -42,26 +46,40 @@ public partial class SegmentScript : Node3D
             }
         }
     }
-    public async void _on_Area_body_exited(CharacterBody3D body)
+    public void _on_Area_body_exited(CharacterBody3D body)
     {
         if (body is Player pBody)
         {
-            if (pBody.Speed > 100)
-            {
-                SegmentSpawner parent = (SegmentSpawner)GetParent();
-                parent.InstanceList.Remove((Node3D)parent.GetChild(0));
-                QueueFree();
-                // GD.Print("killed");
-            }
-            else
-            {
-                // GD.Print("start");
-                await ToSignal(GetTree().CreateTimer(pBody.Speed / (1.5f * pBody.Speed)), SceneTreeTimer.SignalName.Timeout);
-                SegmentSpawner parent = (SegmentSpawner)GetParent();
-                parent.InstanceList.Remove((Node3D)parent.GetChild(0));
-                QueueFree();
-                // GD.Print("end");
-            }
+            DespawnSafeguard.Start(0.15f);
+            PlayerSpeed = pBody.Speed;
         }
+    }
+    public void _on_area_body_entered(CharacterBody3D body)
+    {
+        if (body is Player pBody)
+        {
+            DespawnSafeguard.Stop();
+        }
+    }
+    public async void _on_despawn_safeguard_timeout()
+    {
+        if (PlayerSpeed > 100)
+        {
+            RemoveSegment();
+            GD.Print("despawned without delay");
+        }
+        else
+        {
+            GD.Print("despawn started");
+            await ToSignal(GetTree().CreateTimer(PlayerSpeed / (1.5f * PlayerSpeed)), SceneTreeTimer.SignalName.Timeout);
+            RemoveSegment();
+            GD.Print("despawn finished");
+        }
+    }
+
+    private void RemoveSegment()
+    {
+        SegmentSpawner parent = (SegmentSpawner)GetNode<SegmentSpawner>("../%SegmentSpawner");
+        QueueFree();
     }
 }
