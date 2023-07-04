@@ -6,8 +6,10 @@ public partial class SegmentScript : Node3D
     string ChosenBeam;
     public Timer DespawnSafeguard;
     float PlayerSpeed;
+    SegmentSpawner SpawnerRef;
     public override void _Ready()
     {
+        SpawnerRef = GetNode<SegmentSpawner>("../%SegmentSpawner");
         DespawnSafeguard = GetNode<Timer>("%DespawnSafeguard");
         DespawnSafeguard.Stop();
         GD.Randomize();
@@ -48,7 +50,7 @@ public partial class SegmentScript : Node3D
     }
     public void _on_Area_body_exited(CharacterBody3D body)
     {
-        if (body is Player pBody)
+        if (body is Player pBody && !SpawnerRef.Pause)
         {
             DespawnSafeguard.Start(0.15f);
             PlayerSpeed = pBody.Speed;
@@ -63,7 +65,7 @@ public partial class SegmentScript : Node3D
     }
     public async void _on_despawn_safeguard_timeout()
     {
-        if (PlayerSpeed > 100)
+        if (PlayerSpeed > 100 && !SpawnerRef.Pause)
         {
             RemoveSegment();
             GD.Print("despawned without delay");
@@ -79,7 +81,7 @@ public partial class SegmentScript : Node3D
 
     private void RemoveSegment()
     {
-        SegmentSpawner parent = (SegmentSpawner)GetNode<SegmentSpawner>("../%SegmentSpawner");
+        // SegmentSpawner parent = (SegmentSpawner)GetNode<SegmentSpawner>("../%SegmentSpawner");
         QueueFree();
     }
 }

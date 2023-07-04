@@ -100,6 +100,16 @@ public partial class Gameplay : Node3D
             if (GameOver)
             {
                 GameOverPanel.Show();
+                if (Input.IsActionJustReleased("Restart"))
+                {
+                    Playing = true;
+                    Menu = false;
+                    Login = false;
+                    Register = false;
+                    Settings = false;
+                    GameOverPanel.Hide();
+                    Restart();
+                }
             }
             if (GameOver && Input.IsActionJustReleased("MainMenu"))
             {

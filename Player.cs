@@ -71,7 +71,8 @@ public partial class Player : CharacterBody3D
     }
     public void Restart()
     {
-        Position = new Vector3(0, 0, 0);
+        Speed = 10;
+        Position = new Vector3(0, 0, -50);
         RotationDegrees = new Vector3(0, 0, 0);
     }
 }

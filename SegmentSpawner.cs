@@ -20,7 +20,7 @@ public partial class SegmentSpawner : Node3D
     Player Player;
 
     bool Moved = false;
-
+    public bool Pause = false;
     Vector3 LastSegPosition = Vector3.Zero;
 
     Gameplay GameRef;
@@ -48,10 +48,9 @@ public partial class SegmentSpawner : Node3D
     }
     public override void _Process(double delta)
     {
-        if (GetChildCount() < 8 && GameRef.Playing)
+        if (GetChildCount() < 8 && GameRef.Playing && !Pause)
         {
             SpawnSegment();
-            // SpawnSegment();
             Moved = false;
         }
         //Not a perfect solution, but players hopefully should never run into the issues it causes (Segments not generating fast enough and having gaps in the walls.)
@@ -162,8 +161,9 @@ public partial class SegmentSpawner : Node3D
         LastSegPosition = SegmentInstance.Position;
 
     }
-    public void Restart()
+    public async void Restart()
     {
+        Pause = true;
         LastSegPosition = Vector3.Zero;
         LastKey = 1;
         NextKey = 0;
@@ -171,10 +171,17 @@ public partial class SegmentSpawner : Node3D
         {
             child.QueueFree();
         }
+        for (int i = 0; i < GetChildren().Count; i++)
+        {
+            GetChildren()[i].QueueFree();
+        }
         for (int i = 0; i < 7; i++)
         {
             SpawnSegment();
             Moved = false;
         }
+        //This delay is to stop segments from despawning after a restart! Do not get rid of it or game restarts will break.
+        await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+        Pause = false;
     }
 }
