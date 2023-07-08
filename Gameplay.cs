@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 
 public partial class Gameplay : Node3D
@@ -189,23 +190,29 @@ public partial class Gameplay : Node3D
     public void _on_register_confirm_pressed()
     {
         //Confirm registration button
+        if (IsValidEmail(GetNode<LineEdit>("%Email").Text))
+        {
+            GD.Print("Valid!");
+            //check if password entered/confirmed
+            //firebase code for saving email here.
+        }
     }
-    public void _on_confirm_password_text_submitted()
+    public void _on_confirm_password_text_submitted(string newText)
     {
         //Confirm registration button
     }
 
-    public void _on_email_text_changed()
+    public void _on_email_text_changed(string newText)
     {
-        RegistrationEmail = GetNode<LineEdit>("%Email").Text;
+        RegistrationEmail = newText;
     }
-    public void _on_password_text_changed()
+    public void _on_password_text_changed(string newText)
     {
-        RegistrationPassword = GetNode<LineEdit>("%Password").Text;
+        RegistrationPassword = newText;
     }
-    public void _on_confirm_password_text_changed()
+    public void _on_confirm_password_text_changed(string newText)
     {
-        RegistrationPasswordConfirmation = GetNode<LineEdit>("%ConfirmPassword").Text;
+        RegistrationPasswordConfirmation = newText;
     }
 
     public void _on_settingsback_pressed()
@@ -246,5 +253,14 @@ public partial class Gameplay : Node3D
         GetNode<VBoxContainer>("%SensitivityMenu").Hide();
 
 
+    }
+
+    static bool IsValidEmail(string email)
+    {
+        // Regular expression pattern for email validation
+        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        Regex regex = new Regex(pattern);
+
+        return regex.IsMatch(email);
     }
 }
