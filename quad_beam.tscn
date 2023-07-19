@@ -20,10 +20,8 @@ points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5,
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4cgti"]
 points = PackedVector3Array(-25.3968, -25.3919, -2.89683, 23.9451, 23.9409, 2.5, 23.9451, -23.9409, 2.5, 25.3963, 25.3919, -2.89683, -23.9456, 23.9409, 2.5, 25.3963, -25.3919, -2.89683, -25.3968, 25.3919, -2.89683, -23.9456, -23.9409, 2.5)
 
-[node name="QuadBeam" type="StaticBody3D"]
+[node name="QuadBeam" type="Node3D"]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
-collision_layer = 2
-collision_mask = 2
 script = ExtResource("1_mbju3")
 
 [node name="Path3D" type="Path3D" parent="."]

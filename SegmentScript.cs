@@ -38,8 +38,8 @@ public partial class SegmentScript : Node3D
                 ChosenBeam = "None";
                 break;
         }
-        // GD.Print(ChosenBeam);
-        if (ChosenBeam != "None")
+        GD.Print(this.Name);
+        if (ChosenBeam != "None" && this.Name != "sectionwithstraightlines") //doesn't entirely fix the errors. errors currently appear because sectionwithstraightlines isn't meant to have any obstacles, but due to how the script has been written it needs them. Flawed.
         {
             Beam beam = GetNode<Beam>(ChosenBeam);
             if (beam != null)
@@ -48,7 +48,7 @@ public partial class SegmentScript : Node3D
             }
         }
     }
-    public void _on_Area_body_exited(CharacterBody3D body)
+    public void _on_Area_body_exited(Node3D body)
     {
         if (body is Player pBody && !SpawnerRef.Pause)
         {
@@ -56,7 +56,7 @@ public partial class SegmentScript : Node3D
             PlayerSpeed = pBody.Speed;
         }
     }
-    public void _on_area_body_entered(CharacterBody3D body)
+    public void _on_area_body_entered(Node3D body)
     {
         if (body is Player pBody)
         {
@@ -82,6 +82,6 @@ public partial class SegmentScript : Node3D
     private void RemoveSegment()
     {
         // SegmentSpawner parent = (SegmentSpawner)GetNode<SegmentSpawner>("../%SegmentSpawner");
-        QueueFree();
+        CallDeferred("queue_free");
     }
 }

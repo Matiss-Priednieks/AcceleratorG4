@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=16 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
@@ -7,13 +7,14 @@
 [ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="4_v4org"]
 [ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 [ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
+[ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
 
 [sub_resource type="Environment" id="1"]
 background_mode = 1
 tonemap_mode = 1
 glow_enabled = true
 glow_intensity = 2.33
-glow_bloom = 0.13
+glow_bloom = 0.35
 glow_hdr_threshold = 0.19
 glow_hdr_luminance_cap = 65.64
 fog_enabled = true
@@ -38,6 +39,24 @@ height = 2.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2ifa"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mx6pm"]
+transparency = 1
+cull_mode = 1
+albedo_color = Color(0.690196, 0.14902, 1, 1)
+metallic = 1.0
+metallic_specular = 0.44
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.101961, 0, 0.270588, 1)
+grow_amount = 0.02
+
+[sub_resource type="TextMesh" id="TextMesh_ju1oc"]
+material = SubResource("StandardMaterial3D_mx6pm")
+text = "How fast
+can you go?"
+font = ExtResource("8_fkj2d")
+font_size = 127
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_mfn8l")
 
@@ -50,6 +69,8 @@ environment = SubResource("1")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 unique_name_in_owner = true
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("2_j827p")
 
 [node name="FP" type="Camera3D" parent="Player"]
@@ -162,12 +183,13 @@ offset_right = 42.5
 offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 40
 text = "Score Here"
 horizontal_alignment = 1
 
 [node name="Menu" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -221,7 +243,9 @@ unique_name_in_owner = true
 texture_filter = 3
 custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
+disabled = true
 text = "Login"
 
 [node name="Signup" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup"]
@@ -229,7 +253,9 @@ unique_name_in_owner = true
 texture_filter = 3
 custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
+disabled = true
 text = "Signup"
 
 [node name="Exit" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
@@ -276,7 +302,9 @@ theme = ExtResource("4_v4org")
 texture_filter = 3
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
+disabled = true
 text = "Start Speed"
 
 [node name="Sensitivity" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
@@ -290,7 +318,9 @@ text = "Sensitivity"
 texture_filter = 3
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
+disabled = true
 text = "Fullscreen"
 
 [node name="Back" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
@@ -399,6 +429,7 @@ text = "Login"
 
 [node name="Registration" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -510,6 +541,10 @@ expand_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.1394)
 
 [node name="sectionwithstraightlines" parent="." instance=ExtResource("6_lchth")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="sectionwithstraightlines"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -39.7193)
+mesh = SubResource("TextMesh_ju1oc")
 
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Settings" to="." method="_on_settings_pressed"]

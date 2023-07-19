@@ -2,7 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 
-public partial class Beam : StaticBody3D
+public partial class Beam : Node3D
 {
     [Export] public bool Enabled = false;
     [Export] int MoveSpeed = 10;
