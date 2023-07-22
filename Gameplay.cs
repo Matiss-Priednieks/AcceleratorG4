@@ -99,7 +99,7 @@ public partial class Gameplay : Node3D
             if (GameOver)
             {
                 GameOverPanel.Show();
-                if (Input.IsActionJustReleased("Restart"))
+                if (Input.IsActionJustReleased("Restart") && !Menu && !Login && !Register && !Settings) //TODO: fix this ugly thing
                 {
                     Playing = true;
                     Menu = false;

@@ -12,8 +12,10 @@ public partial class RegistrationScreen : Panel
 {
     // Called when the node enters the scene tree for the first time.
     private string Username, RegistrationEmail, RegistrationPassword, RegistrationPasswordConfirmation;
-    const string APIKey = "AIzaSyBhb4xMuQsCdPLAmxzDeYCumFfdVfMVwqQ";
-    string SignUpURL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + APIKey;
+
+    // const string APIKey = "AIzaSyBhb4xMuQsCdPLAmxzDeYCumFfdVfMVwqQ";
+    // string SignUpURL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + APIKey;
+
     string UserDataBase = "firebaseio.com/users.json";
     const string PROJECT_ID = "accelerator-630fc";
     const string HTTPSExtension = "https://" + PROJECT_ID;
@@ -76,35 +78,7 @@ public partial class RegistrationScreen : Panel
         ConfirmPasswordInput.ReleaseFocus();
 
     }
-    public async void test()
-    {
-        string path = @"acceleratorcreds.json";
 
-
-        System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
-        FirestoreDb db = FirestoreDb.Create(PROJECT_ID);
-
-        CollectionReference usersCollection = db.Collection("users");
-        UserCreditentials userData = new UserCreditentials(Username, RegistrationEmail);
-
-        // Serialize the userData object to a JSON string
-        string userDataJson = JsonSerializer.Serialize(userData);
-
-        // Deserialize the JSON string to a dictionary
-        Dictionary<string, string> userDataDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(userDataJson);
-
-        // Add the dictionary data to Firestore using AddAsync
-        DocumentReference addedDocRef = await usersCollection.AddAsync(userDataDictionary);
-        Console.WriteLine("Document written with ID: " + addedDocRef.Id);
-
-        // Read data from Firestore
-        QuerySnapshot querySnapshot = usersCollection.GetSnapshotAsync().Result;
-        foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
-        {
-            Console.WriteLine(documentSnapshot.Id + " => " + documentSnapshot.ToDictionary());
-        }
-
-    }
 
     public void _on_email_text_changed(string newText)
     {
@@ -204,6 +178,8 @@ public partial class RegistrationScreen : Panel
         await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
         CallDeferred("UserDataRequest");
     }
+
+
     public void _on_http_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
@@ -216,22 +192,20 @@ public partial class RegistrationScreen : Panel
             GD.Print(response);
         }
     }
+
     public void UserDataRequest()
     {
-        // UserCreditentials userData = new UserCreditentials(Username, RegistrationEmail);
-        // string userDataBody = JsonSerializer.Serialize(userData);
-        // string[] userDataHeaders = new string[] { "Content-Type: application/json" };
-        // var usersaveerror = HTTPRequest.Request(HTTPSExtension + UserDataBase, userDataHeaders, HttpClient.Method.Post, userDataBody);
-        // GD.Print(usersaveerror);
-
-        test();
-
+        UserCreditentials userData = new UserCreditentials(Username, RegistrationEmail);
+        string userDataJson = JsonSerializer.Serialize(userData);
+        string[] newRegHeaders = new string[] { "Content-Type: application/json" };
+        var error = HTTPRequest.Request("http://127.0.0.1:5000/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
     }
+
     public void NewRegRequest()
     {
         UserRegCreditentials newReg = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
         string newRegBody = JsonSerializer.Serialize(newReg);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request(SignUpURL, newRegHeaders, HttpClient.Method.Post, newRegBody);
+        var error = HTTPRequest.Request("http://127.0.0.1:5000/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
     }
 }
