@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=18 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
 [ext_resource type="Script" path="res://Player.cs" id="2_j827p"]
 [ext_resource type="AudioStream" uid="uid://bwexk5u8o8by2" path="res://Assets/Crash.wav" id="3_b7rs1"]
 [ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="4_v4org"]
+[ext_resource type="Script" path="res://RegistrationScreen.cs" id="6_2or4y"]
 [ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 [ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
+[ext_resource type="Script" path="res://LoginScreen.cs" id="6_pjbfu"]
 [ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
 
 [sub_resource type="Environment" id="1"]
@@ -190,6 +192,7 @@ horizontal_alignment = 1
 
 [node name="Menu" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -245,7 +248,6 @@ custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
 tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
-disabled = true
 text = "Login"
 
 [node name="Signup" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup"]
@@ -255,7 +257,6 @@ custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
 tooltip_text = "Not available in alpha! Apologies for the inconvenience."
 theme = ExtResource("4_v4org")
-disabled = true
 text = "Signup"
 
 [node name="Exit" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
@@ -391,6 +392,7 @@ offset_bottom = 277.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_v4org")
+script = ExtResource("6_pjbfu")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/LoginScreen"]
 layout_mode = 1
@@ -427,9 +429,13 @@ layout_mode = 2
 theme = ExtResource("4_v4org")
 text = "Login"
 
+[node name="Back" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Back"
+
 [node name="Registration" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -442,6 +448,7 @@ offset_right = 239.5
 offset_bottom = 277.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("6_2or4y")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/Registration"]
 layout_mode = 1
@@ -457,15 +464,21 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Email" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+[node name="NameInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="EmailInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 focus_neighbor_left = NodePath("../Existing")
 focus_neighbor_top = NodePath("../Existing")
-focus_neighbor_right = NodePath("../Password")
-focus_neighbor_bottom = NodePath("../Password")
-focus_next = NodePath("../Password")
+focus_neighbor_right = NodePath("../PasswordInput")
+focus_neighbor_bottom = NodePath("../PasswordInput")
+focus_next = NodePath("../PasswordInput")
 focus_previous = NodePath("../Existing")
 theme = ExtResource("4_v4org")
 placeholder_text = "Email"
@@ -473,16 +486,16 @@ max_length = 320
 select_all_on_focus = true
 caret_blink = true
 
-[node name="Password" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+[node name="PasswordInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
-focus_neighbor_left = NodePath("../Email")
-focus_neighbor_top = NodePath("../Email")
+focus_neighbor_left = NodePath("../EmailInput")
+focus_neighbor_top = NodePath("../EmailInput")
 focus_neighbor_right = NodePath("../ConfirmPassword")
 focus_neighbor_bottom = NodePath("../ConfirmPassword")
 focus_next = NodePath("../ConfirmPassword")
-focus_previous = NodePath("../Email")
+focus_previous = NodePath("../EmailInput")
 theme = ExtResource("4_v4org")
 placeholder_text = "Password"
 secret = true
@@ -490,14 +503,14 @@ select_all_on_focus = true
 
 [node name="ConfirmPassword" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
-focus_neighbor_left = NodePath("../Password")
-focus_neighbor_top = NodePath("../Password")
+focus_neighbor_left = NodePath("../PasswordInput")
+focus_neighbor_top = NodePath("../PasswordInput")
 focus_neighbor_right = NodePath("../RegisterConfirm")
 focus_neighbor_bottom = NodePath("../RegisterConfirm")
 focus_next = NodePath("../RegisterConfirm")
-focus_previous = NodePath("../Password")
+focus_previous = NodePath("../PasswordInput")
 theme = ExtResource("4_v4org")
 placeholder_text = "Confirm Password"
 secret = true
@@ -537,6 +550,9 @@ grow_vertical = 2
 texture = ExtResource("6_mpfm5")
 expand_mode = 1
 
+[node name="HTTPRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
 [node name="MainMenuCam" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.1394)
 
@@ -557,9 +573,15 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensSlider" to="." method="_on_sens_slider_value_changed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensBack" to="." method="_on_sens_back_pressed"]
-[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Email" to="." method="_on_email_text_changed"]
-[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Password" to="." method="_on_password_text_changed"]
-[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="." method="_on_confirm_password_text_changed"]
-[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="." method="_on_confirm_password_text_submitted"]
-[connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/RegisterConfirm" to="." method="_on_register_confirm_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Back" to="." method="_on_login_back_pressed"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/EmailInput" to="CanvasLayer/UIContainer/Registration" method="_on_email_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/EmailInput" to="CanvasLayer/UIContainer/Registration" method="_on_email_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/PasswordInput" to="CanvasLayer/UIContainer/Registration" method="_on_password_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/PasswordInput" to="CanvasLayer/UIContainer/Registration" method="_on_password_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="CanvasLayer/UIContainer/Registration" method="_on_confirm_password_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="CanvasLayer/UIContainer/Registration" method="_on_confirm_password_text_submitted"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/RegisterConfirm" to="CanvasLayer/UIContainer/Registration" method="_on_register_confirm_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Existing" to="." method="_on_existing_pressed"]
+[connection signal="request_completed" from="CanvasLayer/HTTPRequest" to="CanvasLayer/UIContainer/Registration" method="_on_http_request_request_completed"]

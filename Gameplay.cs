@@ -1,7 +1,6 @@
 using Godot;
 using System;
 using System.Threading;
-using System.Text.RegularExpressions;
 
 
 public partial class Gameplay : Node3D
@@ -13,9 +12,7 @@ public partial class Gameplay : Node3D
     public bool GameOver = false;
     public bool Login = false;
     public bool Register = false;
-    private string RegistrationEmail;
-    private string RegistrationPassword;
-    private string RegistrationPasswordConfirmation;
+
 
     Player PlayerObj;
     SegmentSpawner SegmentSpawnerObj;
@@ -35,6 +32,7 @@ public partial class Gameplay : Node3D
         Registration = GetNode<Panel>("%Registration");
         Crosshair = GetNode<TextureRect>("%Crosshair");
         GameOverPanel = GetNode<Panel>("%GameOver");
+
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -101,7 +99,7 @@ public partial class Gameplay : Node3D
             if (GameOver)
             {
                 GameOverPanel.Show();
-                if (Input.IsActionJustReleased("Restart"))
+                if (Input.IsActionJustReleased("Restart") && !Menu && !Login && !Register && !Settings) //TODO: fix this ugly thing
                 {
                     Playing = true;
                     Menu = false;
@@ -162,6 +160,14 @@ public partial class Gameplay : Node3D
         Register = false;
         Settings = false;
     }
+    public void _on_login_back_pressed()
+    {
+        Playing = false;
+        Menu = true;
+        Login = false;
+        Register = false;
+        Settings = false;
+    }
     public void _on_signup_pressed()
     {
         Playing = false;
@@ -187,33 +193,7 @@ public partial class Gameplay : Node3D
         Register = false;
         Settings = false;
     }
-    public void _on_register_confirm_pressed()
-    {
-        //Confirm registration button
-        if (IsValidEmail(GetNode<LineEdit>("%Email").Text))
-        {
-            GD.Print("Valid!");
-            //check if password entered/confirmed
-            //firebase code for saving email here.
-        }
-    }
-    public void _on_confirm_password_text_submitted(string newText)
-    {
-        //Confirm registration button
-    }
 
-    public void _on_email_text_changed(string newText)
-    {
-        RegistrationEmail = newText;
-    }
-    public void _on_password_text_changed(string newText)
-    {
-        RegistrationPassword = newText;
-    }
-    public void _on_confirm_password_text_changed(string newText)
-    {
-        RegistrationPasswordConfirmation = newText;
-    }
 
     public void _on_settingsback_pressed()
     {
@@ -223,6 +203,7 @@ public partial class Gameplay : Node3D
         Register = false;
         Settings = false;
     }
+
     public void _on_sensitivity_button_pressed()
     {
         GetNode<VBoxContainer>("%SensitivityMenu").Show();
@@ -255,12 +236,4 @@ public partial class Gameplay : Node3D
 
     }
 
-    static bool IsValidEmail(string email)
-    {
-        // Regular expression pattern for email validation
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-        Regex regex = new Regex(pattern);
-
-        return regex.IsMatch(email);
-    }
 }
