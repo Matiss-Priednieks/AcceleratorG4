@@ -198,7 +198,7 @@ public partial class RegistrationScreen : Panel
         UserCreditentials userData = new UserCreditentials(Username, RegistrationEmail);
         string userDataJson = JsonSerializer.Serialize(userData);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("http://127.0.0.1:5000/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
+        var error = HTTPRequest.Request("http://20.58.57.165/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
     }
 
     public void NewRegRequest()
@@ -206,6 +206,11 @@ public partial class RegistrationScreen : Panel
         UserRegCreditentials newReg = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
         string newRegBody = JsonSerializer.Serialize(newReg);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("http://127.0.0.1:5000/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
+        var error = HTTPRequest.Request("http://20.58.57.165/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
+    }
+    public void MoveThisElseWhere() //this is just to save the function so I don't forget. This should return whatever username is associated with the email. 
+    {
+        string[] newRegHeaders = new string[] { "Content-Type: application/json" };
+        var error = HTTPRequest.Request("http://20.58.57.165/get-user/<email>", newRegHeaders, HttpClient.Method.Get, RegistrationEmail);
     }
 }
