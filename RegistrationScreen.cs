@@ -12,42 +12,56 @@ public partial class RegistrationScreen : Panel
 {
     // Called when the node enters the scene tree for the first time.
     private string Username, RegistrationEmail, RegistrationPassword, RegistrationPasswordConfirmation;
-
-    // const string APIKey = "AIzaSyBhb4xMuQsCdPLAmxzDeYCumFfdVfMVwqQ";
-    // string SignUpURL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + APIKey;
-
-    string UserDataBase = "firebaseio.com/users.json";
-    const string PROJECT_ID = "accelerator-630fc";
-    const string HTTPSExtension = "https://" + PROJECT_ID;
     LineEdit NameInput, EmailInput, PasswordInput, ConfirmPasswordInput;
     HttpRequest HTTPRequest;
+
+    Panel ErrorPanel;
+    Label ErrorMessage;
     public override void _Ready()
     {
         NameInput = GetNode<LineEdit>("%NameInput");
         EmailInput = GetNode<LineEdit>("%EmailInput");
         PasswordInput = GetNode<LineEdit>("%PasswordInput");
         ConfirmPasswordInput = GetNode<LineEdit>("%ConfirmPassword");
-        HTTPRequest = GetNode<HttpRequest>("%HTTPRequest");
+        HTTPRequest = GetNode<HttpRequest>("%RegRequest");
+
+        ErrorPanel = GetNode<Panel>("%ErrorPanel");
+        ErrorMessage = GetNode<Label>("%ErrorMessage");
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-    }
+
     public void _on_name_input_text_changed(string newText)
     {
-        Username = newText;
+        if (IsValidUsername(newText))
+        {
+            Username = newText;
+            ErrorPanel.Hide();
+        }
+        else
+        {
+            ErrorMessage.Text = "Username cannot containt special characters or be empty";
+            ErrorPanel.Show();
+        }
     }
     public void _on_name_input_text_submitted(string newText)
     {
-        Username = newText;
+        if (IsValidUsername(newText))
+        {
+            Username = newText;
+            ErrorPanel.Hide();
+        }
+        else
+        {
+            ErrorMessage.Text = "Username cannot containt special characters or be empty";
+            ErrorPanel.Show();
+        }
     }
 
 
     public void _on_register_confirm_pressed()
     {
         //Confirm registration button
-        if (ValidRegistration())
+        if (IsValidRegistration())
         {
             //create registration
             CreateRegistration();
@@ -56,7 +70,7 @@ public partial class RegistrationScreen : Panel
     public void _on_password_text_submitted(string newText)
     {
         RegistrationPassword = newText;
-        if (ValidRegistration())
+        if (IsValidRegistration())
         {
             //create registration
             CreateRegistration();
@@ -70,34 +84,40 @@ public partial class RegistrationScreen : Panel
     {
         RegistrationPasswordConfirmation = newText;
         //Confirm registration button
-        if (ValidRegistration())
+        if (IsValidRegistration())
         {
             CreateRegistration();
             //create registration
         }
         ConfirmPasswordInput.ReleaseFocus();
-
     }
 
 
     public void _on_email_text_changed(string newText)
     {
         RegistrationEmail = newText;
+        ErrorPanel.Hide();
     }
     public void _on_email_text_submitted(string newText)
     {
         RegistrationEmail = newText;
-        ValidRegistration();
+        if (IsValidRegistration())
+        {
+            CreateRegistration();
+            //create registration
+        }
         ConfirmPasswordInput.GrabFocus();
     }
 
     public void _on_password_text_changed(string newText)
     {
         RegistrationPassword = newText;
+        ErrorPanel.Hide();
     }
     public void _on_confirm_password_text_changed(string newText)
     {
         RegistrationPasswordConfirmation = newText;
+        ErrorPanel.Hide();
     }
     static bool IsValidEmail(string email)
     {
@@ -115,10 +135,10 @@ public partial class RegistrationScreen : Panel
         return Regex.IsMatch(password, pattern);
     }
 
-    public bool ValidRegistration()
+    public bool IsValidRegistration()
     {
-        GD.Print(ValidPassword());
-        if (ValidEmail() && ValidPassword())
+        GD.Print(IsValidPassword());
+        if (IsValidEmail() && IsValidPassword() && IsValidUsername(Username))
         {
             GD.Print("Valid registration!");
             return true;
@@ -131,7 +151,7 @@ public partial class RegistrationScreen : Panel
         }
     }
 
-    public bool ValidPassword()
+    public bool IsValidPassword()
     {
         if (RegistrationPasswordConfirmation.Equals(RegistrationPassword))
         {
@@ -142,17 +162,21 @@ public partial class RegistrationScreen : Panel
             }
             else
             {
+                ErrorMessage.Text = "Password min length is 6 and must contain a digit";
+                ErrorPanel.Show();
                 GD.Print("Password is too weak!");
                 return false;
             }
         }
         else
         {
+            ErrorMessage.Text = "Passwords Must Match";
+            ErrorPanel.Show();
             GD.Print("Passwords do not match!");
             return false;
         }
     }
-    private bool ValidEmail()
+    private bool IsValidEmail()
     {
         if (IsValidEmail(EmailInput.Text))
         {
@@ -161,6 +185,8 @@ public partial class RegistrationScreen : Panel
         }
         else
         {
+            ErrorMessage.Text = "Invalid Email";
+            ErrorPanel.Show();
             GD.Print("Not Valid Email!");
             return false;
         }
@@ -180,7 +206,7 @@ public partial class RegistrationScreen : Panel
     }
 
 
-    public void _on_http_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
+    public void _on_reg_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
         if (responseCode == 200)
@@ -208,9 +234,5 @@ public partial class RegistrationScreen : Panel
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
         var error = HTTPRequest.Request("http://20.58.57.165/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
     }
-    public void MoveThisElseWhere() //this is just to save the function so I don't forget. This should return whatever username is associated with the email. 
-    {
-        string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("http://20.58.57.165/get-user/<email>", newRegHeaders, HttpClient.Method.Get, RegistrationEmail);
-    }
+
 }

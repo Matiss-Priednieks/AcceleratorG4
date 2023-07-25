@@ -14,6 +14,10 @@ config/name="AcceleratorG4"
 run/main_scene="res://Gameplay.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 
+[autoload]
+
+LoggedInUser="*res://LoggedInUser.cs"
+
 [display]
 
 window/size/viewport_width=1920
