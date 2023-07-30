@@ -32,7 +32,6 @@ public partial class Gameplay : Node3D
         Registration = GetNode<Panel>("%Registration");
         Crosshair = GetNode<TextureRect>("%Crosshair");
         GameOverPanel = GetNode<Panel>("%GameOver");
-
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -232,8 +231,6 @@ public partial class Gameplay : Node3D
         Settings = true;
         GetNode<VBoxContainer>("%ButtonBox").Show();
         GetNode<VBoxContainer>("%SensitivityMenu").Hide();
-
-
     }
 
 }

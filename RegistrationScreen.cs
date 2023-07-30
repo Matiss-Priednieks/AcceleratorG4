@@ -13,10 +13,16 @@ public partial class RegistrationScreen : Panel
     // Called when the node enters the scene tree for the first time.
     private string Username, RegistrationEmail, RegistrationPassword, RegistrationPasswordConfirmation;
     LineEdit NameInput, EmailInput, PasswordInput, ConfirmPasswordInput;
-    HttpRequest HTTPRequest;
+    HttpRequest HTTPRequest, HTTPLoginRequest;
 
-    Panel ErrorPanel;
+    Panel ErrorPanel, LoginScreen;
     Label ErrorMessage;
+    Button Logout, Login, RegisterConfirm;
+    Label UserLabel;
+    LoggedInUser User;
+
+    Gameplay GameplayNode; //Refactor this so parent node isn't necessary!!!
+
     public override void _Ready()
     {
         NameInput = GetNode<LineEdit>("%NameInput");
@@ -24,9 +30,16 @@ public partial class RegistrationScreen : Panel
         PasswordInput = GetNode<LineEdit>("%PasswordInput");
         ConfirmPasswordInput = GetNode<LineEdit>("%ConfirmPassword");
         HTTPRequest = GetNode<HttpRequest>("%RegRequest");
-
+        HTTPLoginRequest = GetNode<HttpRequest>("%LoginRequest");
+        LoginScreen = GetNode<Panel>("%LoginScreen");
         ErrorPanel = GetNode<Panel>("%ErrorPanel");
         ErrorMessage = GetNode<Label>("%ErrorMessage");
+
+        User = GetNode<LoggedInUser>("/root/LoggedInUser");
+
+        Login = GetNode<Button>("%LoginConfirm");
+        RegisterConfirm = GetNode<Button>("%RegisterConfirm");
+        GameplayNode = (Gameplay)GetParent().GetParent().GetParent();
     }
 
 
@@ -64,6 +77,7 @@ public partial class RegistrationScreen : Panel
         if (IsValidRegistration())
         {
             //create registration
+            RegisterConfirm.Disabled = true;
             CreateRegistration();
         }
     }
@@ -204,18 +218,22 @@ public partial class RegistrationScreen : Panel
         await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
         CallDeferred("UserDataRequest");
     }
-
-
-    public void _on_reg_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
+    public async void _on_reg_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
-        if (responseCode == 200)
+        if (responseCode == 200 || responseCode == 201)
         {
-            GD.Print(response);
+            RegisterConfirm.Disabled = false;
+            GameplayNode.Register = false;
+            GameplayNode.Login = true;
+            await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
+            CallDeferred("LoginRequest");
         }
         else
         {
-            GD.Print(response);
+            RegisterConfirm.Disabled = false;
+            GameplayNode.Login = false;
+            GameplayNode.Register = true;
         }
     }
 
@@ -234,5 +252,24 @@ public partial class RegistrationScreen : Panel
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
         var error = HTTPRequest.Request("http://20.58.57.165/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
     }
-
+    public Error LoginRequest()
+    {
+        Login.Disabled = true;
+        if (User.GetUsername() == "Guest")
+        {
+            string[] newRegHeaders = new string[] { "Content-Type: application/json" };
+            UserRegCreditentials LoginCredentials = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
+            string JsonString = JsonSerializer.Serialize(LoginCredentials);
+            var error = HTTPLoginRequest.Request("http://20.58.57.165/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
+            GD.Print(error);
+            return error;
+        }
+        else
+        {
+            GD.Print("Already Logged in");
+            UserLabel.Text = "Guest";
+            User.Logout();
+            return Error.Ok;
+        }
+    }
 }

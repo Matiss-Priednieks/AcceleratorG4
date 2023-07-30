@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=31 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
@@ -6,10 +6,13 @@
 [ext_resource type="AudioStream" uid="uid://bwexk5u8o8by2" path="res://Assets/Crash.wav" id="3_b7rs1"]
 [ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="4_v4org"]
 [ext_resource type="Script" path="res://RegistrationScreen.cs" id="6_2or4y"]
+[ext_resource type="Script" path="res://Menu.cs" id="6_03ev7"]
 [ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 [ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
 [ext_resource type="Script" path="res://LoginScreen.cs" id="6_pjbfu"]
 [ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
+[ext_resource type="Texture2D" uid="uid://cux41a4dveard" path="res://loadingSheet.png" id="8_x5jec"]
+[ext_resource type="Script" path="res://LoadingIcon.cs" id="9_ylcw8"]
 
 [sub_resource type="Environment" id="1"]
 background_mode = 1
@@ -40,6 +43,70 @@ height = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2ifa"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enpas"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_catan"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2xu2"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vfbc"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8w5fr"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wewh4"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubnrv"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbdr5"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlecw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enpas")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_catan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2xu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vfbc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8w5fr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wewh4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubnrv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbdr5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uflvb"]
 bg_color = Color(0.85098, 0.0784314, 0.231373, 1)
@@ -209,6 +276,7 @@ offset_bottom = 277.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_v4org")
+script = ExtResource("6_03ev7")
 
 [node name="ButtonBox" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu"]
 layout_mode = 1
@@ -411,9 +479,27 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_v4org")
 
+[node name="UserLabel" type="Label" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 35
+text = "Guest"
+horizontal_alignment = 1
+
+[node name="LoadingIcon" type="AnimatedSprite2D" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(199, -57.5)
+sprite_frames = SubResource("SpriteFrames_mlecw")
+frame = 3
+frame_progress = 0.71231
+script = ExtResource("9_ylcw8")
+
 [node name="Email" type="LineEdit" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 theme = ExtResource("4_v4org")
 placeholder_text = "Email"
@@ -421,7 +507,7 @@ caret_blink = true
 
 [node name="Password" type="LineEdit" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 theme = ExtResource("4_v4org")
 placeholder_text = "Password"
@@ -429,13 +515,20 @@ secret = true
 
 [node name="LoginConfirm" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 theme = ExtResource("4_v4org")
 text = "Login"
 
+[node name="Logout" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+text = "Logout"
+
 [node name="Back" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 text = "Back"
 
@@ -523,6 +616,7 @@ secret = true
 select_all_on_focus = true
 
 [node name="RegisterConfirm" type="Button" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 focus_neighbor_left = NodePath("../ConfirmPassword")
@@ -602,7 +696,7 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "GuestGuestGuestGuest"
+text = "Guest"
 horizontal_alignment = 1
 autowrap_mode = 1
 
@@ -637,6 +731,7 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="text_changed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Password" to="CanvasLayer/UIContainer/LoginScreen" method="_on_password_text_changed"]
 [connection signal="text_submitted" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Password" to="CanvasLayer/UIContainer/LoginScreen" method="_on_password_text_submitted"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/LoginConfirm" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_confirm_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Logout" to="CanvasLayer/UIContainer/LoginScreen" method="_on_logout_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Back" to="." method="_on_login_back_pressed"]
 [connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_changed"]
 [connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_submitted"]
