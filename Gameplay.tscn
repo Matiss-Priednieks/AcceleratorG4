@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=33 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
@@ -13,6 +13,8 @@
 [ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
 [ext_resource type="Texture2D" uid="uid://cux41a4dveard" path="res://loadingSheet.png" id="8_x5jec"]
 [ext_resource type="Script" path="res://LoadingIcon.cs" id="9_ylcw8"]
+[ext_resource type="Script" path="res://Warning.cs" id="12_d2oij"]
+[ext_resource type="Texture2D" uid="uid://d0xbmhvvq0oi" path="res://tempclosebutton.png" id="12_g3tsu"]
 
 [sub_resource type="Environment" id="1"]
 background_mode = 1
@@ -702,6 +704,63 @@ text = "Guest"
 horizontal_alignment = 1
 autowrap_mode = 1
 
+[node name="Warning" type="Panel" parent="CanvasLayer/UIContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -405.0
+offset_top = -138.0
+offset_right = 405.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("12_d2oij")
+
+[node name="ExitWarning" type="Button" parent="CanvasLayer/UIContainer/Warning"]
+layout_mode = 1
+offset_right = 65.0
+offset_bottom = 67.0
+icon = ExtResource("12_g3tsu")
+flat = true
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UIContainer/Warning"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -376.5
+offset_top = -96.5
+offset_right = 376.5
+offset_bottom = 96.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/UIContainer/Warning/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "WARNING"
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/Warning/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_fkj2d")
+theme_override_font_sizes/font_size = 30
+text = " Do not use on public network to register accounts. Passwords are currently only encrypted serverside and not clientside, so http requests are not secure. This will not be the case in the finished version."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="RegRequest" type="HTTPRequest" parent="CanvasLayer"]
 unique_name_in_owner = true
 
@@ -745,5 +804,6 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="CanvasLayer/UIContainer/Registration" method="_on_confirm_password_text_submitted"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/RegisterConfirm" to="CanvasLayer/UIContainer/Registration" method="_on_register_confirm_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Existing" to="." method="_on_existing_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Warning/ExitWarning" to="CanvasLayer/UIContainer/Warning" method="_on_exit_warning_pressed"]
 [connection signal="request_completed" from="CanvasLayer/RegRequest" to="CanvasLayer/UIContainer/Registration" method="_on_reg_request_request_completed"]
 [connection signal="request_completed" from="CanvasLayer/LoginRequest" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_request_request_completed"]
