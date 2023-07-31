@@ -12,7 +12,7 @@ public partial class RegistrationScreen : Panel
 {
     // Called when the node enters the scene tree for the first time.
     private string Username, RegistrationEmail, RegistrationPassword, RegistrationPasswordConfirmation;
-    LineEdit NameInput, EmailInput, PasswordInput, ConfirmPasswordInput;
+    LineEdit NameInput, EmailInput, PasswordInput, ConfirmPasswordInput, LoginEmailInput, LoginPass;
     HttpRequest HTTPRequest, HTTPLoginRequest;
 
     Panel ErrorPanel, LoginScreen;
@@ -36,6 +36,9 @@ public partial class RegistrationScreen : Panel
         ErrorMessage = GetNode<Label>("%ErrorMessage");
 
         User = GetNode<LoggedInUser>("/root/LoggedInUser");
+
+        LoginEmailInput = GetNode<LineEdit>("%Email");
+        LoginPass = GetNode<LineEdit>("%Password");
 
         Login = GetNode<Button>("%LoginConfirm");
         RegisterConfirm = GetNode<Button>("%RegisterConfirm");
@@ -212,25 +215,38 @@ public partial class RegistrationScreen : Panel
 
         return Regex.IsMatch(username, pattern);
     }
-    private async void CreateRegistration()
+    private void CreateRegistration()
     {
         CallDeferred("NewRegRequest");
-        await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
-        CallDeferred("UserDataRequest");
     }
     public async void _on_reg_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
-        if (responseCode == 200 || responseCode == 201)
+        var dict = (Godot.Collections.Dictionary)response;
+
+        if (responseCode == 200 && (int)dict[key: "status_code"] != 400)
         {
+            ErrorPanel.Hide();
             RegisterConfirm.Disabled = false;
             GameplayNode.Register = false;
             GameplayNode.Login = true;
+            await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
+            CallDeferred("UserDataRequest");
             await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
             CallDeferred("LoginRequest");
         }
         else
         {
+            // if (responseCode == 201)
+            // {
+            //     ErrorPanel.Show();
+            //     ErrorMessage.Text = "User already exists!";
+            // }
+            if ((int)dict[key: "status_code"] == 400)
+            {
+                ErrorPanel.Show();
+                ErrorMessage.Text = "User already exists!";
+            }
             RegisterConfirm.Disabled = false;
             GameplayNode.Login = false;
             GameplayNode.Register = true;
@@ -255,13 +271,14 @@ public partial class RegistrationScreen : Panel
     public Error LoginRequest()
     {
         Login.Disabled = true;
+        LoginEmailInput.Editable = false;
+        LoginPass.Editable = false;
         if (User.GetUsername() == "Guest")
         {
             string[] newRegHeaders = new string[] { "Content-Type: application/json" };
             UserRegCreditentials LoginCredentials = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
             string JsonString = JsonSerializer.Serialize(LoginCredentials);
             var error = HTTPLoginRequest.Request("http://20.58.57.165/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
-            GD.Print(error);
             return error;
         }
         else

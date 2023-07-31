@@ -34,6 +34,14 @@ public partial class LoginScreen : Panel
 
         ErrorPanel.Hide();
     }
+
+    public override void _Process(double delta)
+    {
+        if (Login.Disabled == true)
+        {
+            LoadingIconRef.Show();
+        }
+    }
     public void _on_email_text_changed(string newText)
     {
         LoginEmail = newText;
@@ -66,7 +74,7 @@ public partial class LoginScreen : Panel
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
         await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
-        GD.Print(response);
+        // GD.Print(response);
         if (responseCode == 200)
         {
             Login.Disabled = false;
@@ -95,7 +103,7 @@ public partial class LoginScreen : Panel
             Logout.Hide();
             UserLabel.Hide();
             var dict = (Godot.Collections.Dictionary)response;
-            GD.Print(dict.Keys);
+            // GD.Print(dict.Keys);
             if (dict[key: "response_text"].ToString().Contains("TOO_MANY_ATTEMPTS_TRY_LATER"))
             {
                 ErrorMessage.Text = "Too Many Attempts Try Again Later";
@@ -127,7 +135,7 @@ public partial class LoginScreen : Panel
     public Error LoginRequest()
     {
         Login.Disabled = true;
-        LoadingIconRef.Show();
+        // LoadingIconRef.Show();
 
         EmailInput.Editable = false;
         PasswordInput.Editable = false;
@@ -138,7 +146,7 @@ public partial class LoginScreen : Panel
             UserRegCreditentials LoginCredentials = new UserRegCreditentials(LoginEmail, LoginPassword, true);
             string JsonString = JsonSerializer.Serialize(LoginCredentials);
             var error = HTTPRequest.Request("http://20.58.57.165/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
-            GD.Print(error);
+            // GD.Print(error);
             return error;
         }
         else

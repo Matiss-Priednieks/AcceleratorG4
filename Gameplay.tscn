@@ -262,7 +262,6 @@ horizontal_alignment = 1
 
 [node name="Menu" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -297,6 +296,7 @@ theme = ExtResource("4_v4org")
 texture_filter = 3
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+tooltip_text = "Jump right into it!"
 theme = ExtResource("4_v4org")
 text = "Play"
 
@@ -317,16 +317,16 @@ unique_name_in_owner = true
 texture_filter = 3
 custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
-tooltip_text = "Not available in alpha! Apologies for the inconvenience."
+tooltip_text = "Login, logout or see account details"
 theme = ExtResource("4_v4org")
-text = "Login"
+text = "Account"
 
 [node name="Signup" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup"]
 unique_name_in_owner = true
 texture_filter = 3
 custom_minimum_size = Vector2(190, 100)
 layout_mode = 2
-tooltip_text = "Not available in alpha! Apologies for the inconvenience."
+tooltip_text = "Create an account"
 theme = ExtResource("4_v4org")
 text = "Signup"
 
@@ -334,6 +334,7 @@ text = "Signup"
 texture_filter = 3
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+tooltip_text = "Intentionally crash the game"
 theme = ExtResource("4_v4org")
 text = "Exit"
 
@@ -449,6 +450,7 @@ text = "Back"
 
 [node name="LoginScreen" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
