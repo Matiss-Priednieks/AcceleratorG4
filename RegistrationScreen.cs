@@ -258,7 +258,7 @@ public partial class RegistrationScreen : Panel
         UserCreditentials userData = new UserCreditentials(Username, RegistrationEmail);
         string userDataJson = JsonSerializer.Serialize(userData);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("http://20.58.57.165/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
+        var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
     }
 
     public void NewRegRequest()
@@ -266,7 +266,7 @@ public partial class RegistrationScreen : Panel
         UserRegCreditentials newReg = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
         string newRegBody = JsonSerializer.Serialize(newReg);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("http://20.58.57.165/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
+        var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/create-user", newRegHeaders, HttpClient.Method.Post, newRegBody);
     }
     public Error LoginRequest()
     {
@@ -278,7 +278,7 @@ public partial class RegistrationScreen : Panel
             string[] newRegHeaders = new string[] { "Content-Type: application/json" };
             UserRegCreditentials LoginCredentials = new UserRegCreditentials(RegistrationEmail, RegistrationPasswordConfirmation, true);
             string JsonString = JsonSerializer.Serialize(LoginCredentials);
-            var error = HTTPLoginRequest.Request("http://20.58.57.165/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
+            var error = HTTPLoginRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
             return error;
         }
         else
