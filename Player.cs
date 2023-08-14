@@ -7,16 +7,25 @@ public partial class Player : CharacterBody3D
     [Export(PropertyHint.Range, "0.01,5,")] public float MouseSensitivity = 0.1f;
     public float Speed = 10;
     Gameplay GameRef;
+    float Highscore;
+    LoggedInUser User;
 
     public override void _Ready()
     {
         Input.MouseMode = Input.MouseModeEnum.Captured;
         GameRef = GetParent<Gameplay>();
+        User = GetNode<LoggedInUser>("/root/LoggedInUser");
+
     }
 
     public override void _Process(double delta)
     {
         var displaySpeed = (int)Speed;
+        if (Speed > Highscore)
+        {
+            Highscore = Speed;
+            User.SetHighscore(Highscore);
+        }
         GetNode<Panel>("%Score").GetNode<Label>("Label").Text = displaySpeed.ToString();
     }
 
@@ -26,13 +35,18 @@ public partial class Player : CharacterBody3D
         if (!GameRef.GameOver && GameRef.Playing)
         {
             var collision = MoveAndCollide(Transform.Basis.Z * (Speed * (float)delta) * -1);
-            if ((Time.GetTicksUsec() % 1000 > 900))
+            if (Time.GetTicksUsec() % 1000 > 900)
             {
                 Speed += 0.1f;
             }
             if (collision != null)
             {
                 GetNode<AudioStreamPlayer3D>("%Crash").Play();
+                if (Speed > Highscore)
+                {
+                    Highscore = Speed;
+                    User.SetHighscore(Highscore);
+                }
                 GameRef.GameOver = true;
                 GameRef.Playing = false;
             }
@@ -48,7 +62,7 @@ public partial class Player : CharacterBody3D
     {
         if (GameRef.Playing)
         {
-            var mouseMotion = inputEvent as InputEventMouseMotion;
+            InputEventMouseMotion mouseMotion = inputEvent as InputEventMouseMotion;
             if (mouseMotion != null)
             {
                 if (Input.MouseMode == Input.MouseModeEnum.Captured)

@@ -8,6 +8,7 @@ public partial class LoggedInUser : Node
 
     public bool LoggedIn { get; set; }
 
+    public float UserHighScore { get; private set; }
     public override void _Ready()
     {
         UsernameLabel = GetNode<Label>("../Node3D/CanvasLayer/UIContainer/UsernamePanel/MarginContainer/Username");
@@ -35,4 +36,22 @@ public partial class LoggedInUser : Node
         SetUsername(username);
         LoggedIn = true;
     }
+
+    public void SetHighscore(float value)
+    {
+        if (value > UserHighScore) UserHighScore = value;
+    }
+    public float GetHighscore()
+    {
+        return UserHighScore;
+    }
+
+    //TODO
+    // public Error HighscoreUpdateRequest()
+    // {
+    //     UserCreditentials userData = new(User.GetHighscore());
+    //     string userDataJson = JsonSerializer.Serialize(userData);
+    //     string[] newRegHeaders = new string[] { "Content-Type: application/json" };
+    //     var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/save-user", newRegHeaders, HttpClient.Method.Post, userDataJson);
+    // }
 }

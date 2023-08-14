@@ -16,6 +16,8 @@ public partial class LoginScreen : Panel
     Button Logout, Login;
     AnimatedSprite2D LoadingIconRef;
 
+
+
     public override void _Ready()
     {
         EmailInput = GetNode<LineEdit>("%Email");
@@ -74,13 +76,18 @@ public partial class LoginScreen : Panel
     {
         var response = Json.ParseString(body.GetStringFromUtf8());
         await ToSignal(GetTree().CreateTimer(1f), SceneTreeTimer.SignalName.Timeout);
-        // GD.Print(response);
+        GD.Print(responseCode);
         if (responseCode == 200)
         {
             Login.Disabled = false;
             ErrorPanel.Hide();
             var dict = (Godot.Collections.Dictionary)response;
+
             User.Login(dict[key: "username"].ToString());
+
+            GD.Print(dict.Keys);
+            User.SetHighscore((float)dict[key: "highscore"]);
+
             UserLabel.Text = dict[key: "username"].ToString();
             Logout.Show();
             UserLabel.Show();
@@ -103,13 +110,14 @@ public partial class LoginScreen : Panel
             Logout.Hide();
             UserLabel.Hide();
             var dict = (Godot.Collections.Dictionary)response;
-            // GD.Print(dict.Keys);
+            GD.Print(dict.Keys);
             if (dict[key: "response_text"].ToString().Contains("TOO_MANY_ATTEMPTS_TRY_LATER"))
             {
                 ErrorMessage.Text = "Too Many Attempts Try Again Later";
             }
             else
             {
+                GD.Print(response);
                 ErrorMessage.Text = "Invalid Login";
             }
             ErrorPanel.Show();
@@ -143,7 +151,7 @@ public partial class LoginScreen : Panel
         if (User.GetUsername() == "Guest")
         {
             string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-            UserRegCreditentials LoginCredentials = new UserRegCreditentials(LoginEmail, LoginPassword, true);
+            UserRegCreditentials LoginCredentials = new(LoginEmail, LoginPassword, true);
             string JsonString = JsonSerializer.Serialize(LoginCredentials);
             var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/get-user/login", newRegHeaders, HttpClient.Method.Post, JsonString);
             // GD.Print(error);

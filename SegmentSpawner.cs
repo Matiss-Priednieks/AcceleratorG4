@@ -1,15 +1,9 @@
 using Godot;
 using Godot.Collections;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 
 public partial class SegmentSpawner : Node3D
 {
-    PackedScene CircleSegment, CircleWithObstacle, LineSegment, ExpandedSegment, LargeObstacleSegment;
+    PackedScene CircleWithObstacle, LineSegment, LargeObstacleSegment;
     RandomNumberGenerator rng;
 
     Dictionary SegmentDict;
@@ -34,11 +28,12 @@ public partial class SegmentSpawner : Node3D
         CircleWithObstacle = ResourceLoader.Load<PackedScene>("res://CirclesSegmentWithObstacles.tscn");
         LineSegment = ResourceLoader.Load<PackedScene>("res://LinesSegment.tscn");
         LargeObstacleSegment = ResourceLoader.Load<PackedScene>("res://ExpandedSegmentWithObstacles.tscn");
-        SegmentDict = new Dictionary();
-
-        SegmentDict.Add(1, (PackedScene)CircleWithObstacle);
-        SegmentDict.Add(2, (PackedScene)LineSegment);
-        SegmentDict.Add(3, (PackedScene)LargeObstacleSegment);
+        SegmentDict = new Dictionary
+        {
+            { 1, CircleWithObstacle },
+            { 2, LineSegment },
+            { 3, LargeObstacleSegment}
+        };
         keyArray = new Godot.Collections.Array(SegmentDict.Keys);
 
         //Spawn first 8 segments
