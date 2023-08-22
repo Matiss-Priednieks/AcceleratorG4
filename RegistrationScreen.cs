@@ -242,10 +242,13 @@ public partial class RegistrationScreen : Panel
             //     ErrorPanel.Show();
             //     ErrorMessage.Text = "User already exists!";
             // }
-            if ((int)dict[key: "status_code"] == 400)
+            if (dict.Count != 0)
             {
-                ErrorPanel.Show();
-                ErrorMessage.Text = "User already exists!";
+                if ((int)dict[key: "status_code"] == 400)
+                {
+                    ErrorPanel.Show();
+                    ErrorMessage.Text = "User already exists!";
+                }
             }
             RegisterConfirm.Disabled = false;
             GameplayNode.Login = false;

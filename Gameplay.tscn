@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bf3avcy4d7p2w"]
+[gd_scene load_steps=35 format=3 uid="uid://bf3avcy4d7p2w"]
 
 [ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
 [ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
@@ -10,11 +10,13 @@
 [ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 [ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
 [ext_resource type="Script" path="res://LoginScreen.cs" id="6_pjbfu"]
+[ext_resource type="PackedScene" uid="uid://di16bsl4diopy" path="res://leaderboard_score_object.tscn" id="7_bthgw"]
 [ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
 [ext_resource type="Texture2D" uid="uid://cux41a4dveard" path="res://loadingSheet.png" id="8_x5jec"]
 [ext_resource type="Script" path="res://LoadingIcon.cs" id="9_ylcw8"]
 [ext_resource type="Script" path="res://Warning.cs" id="12_d2oij"]
 [ext_resource type="Texture2D" uid="uid://d0xbmhvvq0oi" path="res://tempclosebutton.png" id="12_g3tsu"]
+[ext_resource type="Script" path="res://debugMessage.cs" id="15_3v3mm"]
 
 [sub_resource type="Environment" id="1"]
 background_mode = 1
@@ -339,6 +341,44 @@ layout_mode = 2
 tooltip_text = "Intentionally crash the game"
 theme = ExtResource("4_v4org")
 text = "Exit"
+
+[node name="Leaderboard" type="Panel" parent="CanvasLayer/UIContainer/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -312.5
+offset_top = 94.0
+offset_right = -526.5
+offset_bottom = -91.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -9.0
+offset_right = 62.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Leaderboard"
+horizontal_alignment = 1
+
+[node name="LeaderboardScoreObject" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer" instance=ExtResource("7_bthgw")]
+layout_mode = 2
 
 [node name="SettingsMenu" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
@@ -762,10 +802,24 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="debugMessage" type="Label" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 15.0
+grow_horizontal = 0
+script = ExtResource("15_3v3mm")
+
 [node name="RegRequest" type="HTTPRequest" parent="CanvasLayer"]
 unique_name_in_owner = true
 
 [node name="LoginRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
+[node name="HighscoreRequest" type="HTTPRequest" parent="CanvasLayer"]
 unique_name_in_owner = true
 
 [node name="MainMenuCam" type="Camera3D" parent="."]
@@ -808,3 +862,4 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="pressed" from="CanvasLayer/UIContainer/Warning/ExitWarning" to="CanvasLayer/UIContainer/Warning" method="_on_exit_warning_pressed"]
 [connection signal="request_completed" from="CanvasLayer/RegRequest" to="CanvasLayer/UIContainer/Registration" method="_on_reg_request_request_completed"]
 [connection signal="request_completed" from="CanvasLayer/LoginRequest" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_request_request_completed"]
+[connection signal="request_completed" from="CanvasLayer/HighscoreRequest" to="CanvasLayer/UIContainer/debugMessage" method="_on_highscore_request_request_completed"]

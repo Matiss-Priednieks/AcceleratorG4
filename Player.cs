@@ -88,5 +88,6 @@ public partial class Player : CharacterBody3D
         Speed = 10;
         Position = new Vector3(0, 0, -50);
         RotationDegrees = new Vector3(0, 0, 0);
+        User.HighscoreUpdateRequest();
     }
 }

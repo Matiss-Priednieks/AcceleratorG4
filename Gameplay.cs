@@ -138,7 +138,6 @@ public partial class Gameplay : Node3D
 	}
 	public void Restart()
 	{
-		//TODO: fix restart issue, restart after exiting first segment causes next segments to disappear.
 		SegmentSpawnerObj.Restart();
 		PlayerObj.Restart();
 		GameOver = false;
@@ -234,3 +233,4 @@ public partial class Gameplay : Node3D
 	}
 
 }
+

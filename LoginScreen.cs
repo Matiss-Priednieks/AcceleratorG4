@@ -87,7 +87,7 @@ public partial class LoginScreen : Panel
 
             GD.Print(dict.Keys);
             User.SetHighscore((float)dict[key: "highscore"]);
-
+            User.SetEmail(LoginEmail);
             UserLabel.Text = dict[key: "username"].ToString();
             Logout.Show();
             UserLabel.Show();
