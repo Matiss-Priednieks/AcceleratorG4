@@ -10,6 +10,9 @@ public partial class Player : CharacterBody3D
     float Highscore;
     LoggedInUser User;
 
+    public bool RequestNotSent { get; private set; }
+
+
     public override void _Ready()
     {
         Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -25,6 +28,15 @@ public partial class Player : CharacterBody3D
         {
             Highscore = Speed;
             User.SetHighscore(Highscore);
+            if (GameRef.GameOver && RequestNotSent)
+            {
+                Error requestResult = User.HighscoreUpdateRequest();
+                if (requestResult is Error.Ok)
+                {
+                    GD.Print("Score sent to server.");
+                    RequestNotSent = true;
+                }
+            }
         }
         GetNode<Panel>("%Score").GetNode<Label>("Label").Text = displaySpeed.ToString();
     }
@@ -51,6 +63,8 @@ public partial class Player : CharacterBody3D
                 GameRef.Playing = false;
             }
         }
+
+
 
     }
     public override void _Input(InputEvent inputEvent)
@@ -88,6 +102,6 @@ public partial class Player : CharacterBody3D
         Speed = 10;
         Position = new Vector3(0, 0, -50);
         RotationDegrees = new Vector3(0, 0, 0);
-        User.HighscoreUpdateRequest();
+        RequestNotSent = false;
     }
 }

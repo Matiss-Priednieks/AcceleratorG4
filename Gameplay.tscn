@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://LinesSegment.tscn" id="6_lchth"]
 [ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
 [ext_resource type="Script" path="res://LoginScreen.cs" id="6_pjbfu"]
-[ext_resource type="PackedScene" uid="uid://di16bsl4diopy" path="res://leaderboard_score_object.tscn" id="7_bthgw"]
+[ext_resource type="Script" path="res://Leaderboard.cs" id="7_3m2y8"]
 [ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
 [ext_resource type="Texture2D" uid="uid://cux41a4dveard" path="res://loadingSheet.png" id="8_x5jec"]
 [ext_resource type="Script" path="res://LoadingIcon.cs" id="9_ylcw8"]
@@ -259,7 +259,7 @@ offset_right = 42.5
 offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/outline_size = 5
+theme = ExtResource("4_v4org")
 theme_override_font_sizes/font_size = 40
 text = "Score Here"
 horizontal_alignment = 1
@@ -282,18 +282,15 @@ theme = ExtResource("4_v4org")
 script = ExtResource("6_03ev7")
 
 [node name="ButtonBox" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -199.5
-offset_top = -237.5
-offset_right = 199.5
-offset_bottom = 237.5
+layout_mode = 2
+offset_left = 37.0
+offset_top = 39.5
+offset_right = 442.0
+offset_bottom = 514.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("4_v4org")
 
 [node name="Play" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
@@ -342,43 +339,44 @@ tooltip_text = "Intentionally crash the game"
 theme = ExtResource("4_v4org")
 text = "Exit"
 
-[node name="Leaderboard" type="Panel" parent="CanvasLayer/UIContainer/Menu"]
+[node name="Leaderboard" type="PanelContainer" parent="CanvasLayer/UIContainer/Menu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -312.5
+offset_left = -401.0
 offset_top = 94.0
-offset_right = -526.5
+offset_right = -526.0
 offset_bottom = -91.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_v4org")
+script = ExtResource("7_3m2y8")
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -62.0
-offset_top = -9.0
-offset_right = 62.0
-offset_bottom = 9.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2"]
 layout_mode = 2
+theme = ExtResource("4_v4org")
 
 [node name="Label" type="Label" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 26
 text = "Leaderboard"
 horizontal_alignment = 1
 
-[node name="LeaderboardScoreObject" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer" instance=ExtResource("7_bthgw")]
+[node name="ScoreList" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+
+[node name="UpdateLeaderboard" type="Timer" parent="CanvasLayer/UIContainer/Menu/Leaderboard"]
+wait_time = 5.0
+autostart = true
 
 [node name="SettingsMenu" type="Panel" parent="CanvasLayer/UIContainer"]
 unique_name_in_owner = true
@@ -822,6 +820,9 @@ unique_name_in_owner = true
 [node name="HighscoreRequest" type="HTTPRequest" parent="CanvasLayer"]
 unique_name_in_owner = true
 
+[node name="LeaderboardRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
 [node name="MainMenuCam" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.1394)
 
@@ -836,6 +837,7 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Login" to="." method="_on_login_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Signup" to="." method="_on_signup_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Exit" to="." method="_on_exit_pressed"]
+[connection signal="timeout" from="CanvasLayer/UIContainer/Menu/Leaderboard/UpdateLeaderboard" to="CanvasLayer/UIContainer/Menu/Leaderboard" method="_on_update_leaderboard_timeout"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Sensitivity" to="." method="_on_sensitivity_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Back" to="." method="_on_settingsback_pressed"]
 [connection signal="focus_exited" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_focus_exited"]
@@ -863,3 +865,4 @@ mesh = SubResource("TextMesh_ju1oc")
 [connection signal="request_completed" from="CanvasLayer/RegRequest" to="CanvasLayer/UIContainer/Registration" method="_on_reg_request_request_completed"]
 [connection signal="request_completed" from="CanvasLayer/LoginRequest" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_request_request_completed"]
 [connection signal="request_completed" from="CanvasLayer/HighscoreRequest" to="CanvasLayer/UIContainer/debugMessage" method="_on_highscore_request_request_completed"]
+[connection signal="request_completed" from="CanvasLayer/LeaderboardRequest" to="CanvasLayer/UIContainer/Menu/Leaderboard" method="_on_leaderboard_request_request_completed"]
