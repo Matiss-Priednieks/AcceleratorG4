@@ -57,12 +57,12 @@ public partial class SegmentSpawner : Node3D
                 if (child is not null)
                 {
                     child.Position += new Vector3(0, 0, 25000);
-                    GD.Print(child.Position);
+                    // GD.Print(child.Position);
                 }
             }
 
             Player.Position += new Vector3(0, 0, 25000);
-            GD.Print(Player.Position);
+            // GD.Print(Player.Position);
             LastSegPosition = LastKey == 2 ? new Vector3(0, 0, -220) : new Vector3(0, 0, -100);
             if (LastKey >= 2 && NextKey >= 2)
             {

@@ -15,7 +15,7 @@ public partial class LoggedInUser : Node
     public string Email { get; set; }
     public string Username { get; set; }
 
-    public float UserHighScore { get; private set; }
+    public int UserHighScore { get; private set; }
     public override void _Ready()
     {
         HTTPRequest = GetNode<HttpRequest>("../Node3D/CanvasLayer/HighscoreRequest");
@@ -52,7 +52,7 @@ public partial class LoggedInUser : Node
 
     public void SetHighscore(float value)
     {
-        if (value > UserHighScore) UserHighScore = value;
+        UserHighScore = (int)value;
     }
     public float GetHighscore()
     {
@@ -63,10 +63,11 @@ public partial class LoggedInUser : Node
     //TODO
     public Error HighscoreUpdateRequest()
     {
-        UserCreditentials userData = new(Email, Username, GetHighscore());
+        UserCreditentials userData = new(Username, Email, GetHighscore());
         string userDataJson = JsonSerializer.Serialize(userData);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
         var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/update-highscore", newRegHeaders, HttpClient.Method.Post, userDataJson);
+        GD.Print(userData.email + ", " + userData.username + ", " + userData.highscore + ".");
         return error;
     }
 }

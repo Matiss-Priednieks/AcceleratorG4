@@ -79,6 +79,8 @@ public partial class LoginScreen : Panel
         GD.Print(responseCode);
         if (responseCode == 200)
         {
+            GD.Print(responseCode);
+
             Login.Disabled = false;
             ErrorPanel.Hide();
             var dict = (Godot.Collections.Dictionary)response;
@@ -88,6 +90,7 @@ public partial class LoginScreen : Panel
             GD.Print(dict.Keys);
             User.SetHighscore((float)dict[key: "highscore"]);
             User.SetEmail(LoginEmail);
+            // User.SetUsername(username);
             UserLabel.Text = dict[key: "username"].ToString();
             Logout.Show();
             UserLabel.Show();
@@ -110,14 +113,14 @@ public partial class LoginScreen : Panel
             Logout.Hide();
             UserLabel.Hide();
             var dict = (Godot.Collections.Dictionary)response;
-            GD.Print(dict.Keys);
+            // GD.Print(dict.Keys);
             if (dict[key: "response_text"].ToString().Contains("TOO_MANY_ATTEMPTS_TRY_LATER"))
             {
                 ErrorMessage.Text = "Too Many Attempts Try Again Later";
             }
             else
             {
-                GD.Print(response);
+                // GD.Print(response);
                 ErrorMessage.Text = "Invalid Login";
             }
             ErrorPanel.Show();

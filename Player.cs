@@ -15,6 +15,7 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
+        RequestNotSent = true;
         Input.MouseMode = Input.MouseModeEnum.Captured;
         GameRef = GetParent<Gameplay>();
         User = GetNode<LoggedInUser>("/root/LoggedInUser");
@@ -24,19 +25,12 @@ public partial class Player : CharacterBody3D
     public override void _Process(double delta)
     {
         var displaySpeed = (int)Speed;
-        if (Speed > Highscore)
+        User.SetHighscore(Speed);
+        if (GameRef.GameOver && RequestNotSent)
         {
-            Highscore = Speed;
-            User.SetHighscore(Highscore);
-            if (GameRef.GameOver && RequestNotSent)
-            {
-                Error requestResult = User.HighscoreUpdateRequest();
-                if (requestResult is Error.Ok)
-                {
-                    GD.Print("Score sent to server.");
-                    RequestNotSent = true;
-                }
-            }
+            Error requestResult = User.HighscoreUpdateRequest();
+            GD.Print("Score sent to server.");
+            RequestNotSent = false;
         }
         GetNode<Panel>("%Score").GetNode<Label>("Label").Text = displaySpeed.ToString();
     }
@@ -46,6 +40,7 @@ public partial class Player : CharacterBody3D
     {
         if (!GameRef.GameOver && GameRef.Playing)
         {
+            RequestNotSent = true;
             var collision = MoveAndCollide(Transform.Basis.Z * (Speed * (float)delta) * -1);
             if (Time.GetTicksUsec() % 1000 > 900)
             {

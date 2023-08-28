@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections;
 using System.Linq;
 
 
@@ -35,23 +36,38 @@ public partial class Leaderboard : PanelContainer
 
 	public void _on_leaderboard_request_request_completed(long result, long responseCode, string[] headers, byte[] body)
 	{
-		Json json = new();
-		json.Parse(body.GetStringFromUtf8());
-		var response = json.Data;
-		var dict = (Godot.Collections.Array)response;
-
 		if (responseCode == 200 || responseCode == 201)
 		{
-			GD.Print(dict);
-			foreach (var child in ScoreList.GetChildren())
+			if (ScoreList.GetChildCount() < 10)
 			{
-				child.QueueFree();
-			}
-			foreach (Godot.Collections.Dictionary item in dict.Select(v => (Dictionary)v))
-			{
-				var lbItemInst = LeaderboardItem.Instantiate<Panel>();
-				lbItemInst.GetNode<Label>("LBScoreLabel").Text = item[key: "username"].ToString() + ": " + item[key: "highscore"].ToString();
-				ScoreList.AddChild(lbItemInst);
+				Json json = new();
+				json.Parse(body.GetStringFromUtf8());
+				var dict = (Dictionary<string, int[]>)json.Data;
+
+				System.Collections.Generic.List<(string Username, int Score)> PlayerScores = new System.Collections.Generic.List<(string, int)>();
+
+				foreach (var child in ScoreList.GetChildren())
+				{
+					child.QueueFree();
+				}
+
+				foreach (var (key, value) in dict)
+				{
+					foreach (var score in value)
+					{
+						PlayerScores.Add((key, score));
+					}
+				}
+
+				var sortedPlayers = PlayerScores.OrderByDescending(player => player.Score);
+
+				foreach (var (Username, Score) in sortedPlayers.Take(10))
+				{
+					var lbItemInst = LeaderboardItem.Instantiate<Panel>();
+
+					lbItemInst.GetNode<Label>("LBScoreLabel").Text = $"{Username} : {Score}";
+					ScoreList.AddChild(lbItemInst);
+				}
 			}
 		}
 		else
