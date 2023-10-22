@@ -66,7 +66,7 @@ public partial class LoggedInUser : Node
         UserCreditentials userData = new(Username, Email, GetHighscore());
         string userDataJson = JsonSerializer.Serialize(userData);
         string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-        var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/update-highscore", newRegHeaders, HttpClient.Method.Post, userDataJson);
+        var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/forwardvector/update-highscore", newRegHeaders, HttpClient.Method.Post, userDataJson);
         GD.Print(userData.email + ", " + userData.username + ", " + userData.highscore + ".");
         return error;
     }

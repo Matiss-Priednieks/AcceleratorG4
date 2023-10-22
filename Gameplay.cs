@@ -7,11 +7,7 @@ public partial class Gameplay : Node3D
 {
 	// Called when the node enters the scene tree for the first time.
 	public bool Menu = true;
-	public bool Settings = false;
-	public bool Playing = false;
-	public bool GameOver = false;
-	public bool Login = false;
-	public bool Register = false;
+	public bool Settings, Playing, GameOver, Login, Register = false;
 
 
 	Player PlayerObj;

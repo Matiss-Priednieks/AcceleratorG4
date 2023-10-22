@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FirebaseAdmin;
-using Google.Cloud.Firestore;
-using Google.Apis.Auth.OAuth2;
+// using FirebaseAdmin;
+// using Google.Cloud.Firestore;
+// using Google.Apis.Auth.OAuth2;
 
 public partial class RegistrationScreen : Panel
 {

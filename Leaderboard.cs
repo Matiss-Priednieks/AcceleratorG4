@@ -30,7 +30,7 @@ public partial class Leaderboard : PanelContainer
 	public Error PopulateLeaderboard()
 	{
 		string[] newRegHeaders = new string[] { "Content-Type: application/json" };
-		var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/get-leaderboard", newRegHeaders, HttpClient.Method.Get, "{}");
+		var error = HTTPRequest.Request("https://forwardvector.uksouth.cloudapp.azure.com/forwardvector/get-leaderboard", newRegHeaders, HttpClient.Method.Get, "{}");
 		return error;
 	}
 
