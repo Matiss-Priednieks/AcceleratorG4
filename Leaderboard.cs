@@ -16,7 +16,7 @@ public partial class Leaderboard : PanelContainer
 	{
 		HTTPRequest = GetNode<HttpRequest>("%LeaderboardRequest");
 
-		LeaderboardItem = ResourceLoader.Load<PackedScene>("res://leaderboard_score_object.tscn");
+		LeaderboardItem = ResourceLoader.Load<PackedScene>("res://Scenes/leaderboard_score_object.tscn");
 
 		ScoreList = GetNode<VBoxContainer>("%ScoreList");
 

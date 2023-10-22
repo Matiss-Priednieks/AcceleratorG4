@@ -38,8 +38,8 @@ public partial class SegmentScript : Node3D
                 ChosenBeam = "None";
                 break;
         }
-        GD.Print(this.Name);
-        if (ChosenBeam != "None" && this.Name != "sectionwithstraightlines") //doesn't entirely fix the errors. errors currently appear because sectionwithstraightlines isn't meant to have any obstacles, but due to how the script has been written it needs them. Flawed.
+        // Not perfect solution, but ensures straight line segment doesn't try to spawn obstacles. TODO: Change so it checks each childs name rather than the 3rd child.
+        if (ChosenBeam != "None" && GetChild<Node3D>(3).Name != "NoObstacleMarker")
         {
             Beam beam = GetNode<Beam>(ChosenBeam);
             if (beam != null)

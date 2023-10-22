@@ -25,9 +25,9 @@ public partial class SegmentSpawner : Node3D
         GD.Randomize();
         rng = new RandomNumberGenerator();
         rng.Randomize();
-        CircleWithObstacle = ResourceLoader.Load<PackedScene>("res://CirclesSegmentWithObstacles.tscn");
-        LineSegment = ResourceLoader.Load<PackedScene>("res://LinesSegment.tscn");
-        LargeObstacleSegment = ResourceLoader.Load<PackedScene>("res://ExpandedSegmentWithObstacles.tscn");
+        CircleWithObstacle = ResourceLoader.Load<PackedScene>("res://Scenes/CirclesSegmentWithObstacles.tscn");
+        LineSegment = ResourceLoader.Load<PackedScene>("res://Scenes/LinesSegment.tscn");
+        LargeObstacleSegment = ResourceLoader.Load<PackedScene>("res://Scenes/ExpandedSegmentWithObstacles.tscn");
         SegmentDict = new Dictionary
         {
             { 1, CircleWithObstacle },

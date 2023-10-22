@@ -5,7 +5,7 @@ public partial class Player : CharacterBody3D
 {
 
     [Export(PropertyHint.Range, "0.01,5,")] public float MouseSensitivity = 0.1f;
-    public float Speed = 10;
+    public float Speed = 50;
     Gameplay GameRef;
     float Highscore;
     LoggedInUser User;
@@ -44,7 +44,7 @@ public partial class Player : CharacterBody3D
             var collision = MoveAndCollide(Transform.Basis.Z * (Speed * (float)delta) * -1);
             if (Time.GetTicksUsec() % 1000 > 900)
             {
-                Speed += 0.1f;
+                Speed *= 1.002f;
             }
             if (collision != null)
             {

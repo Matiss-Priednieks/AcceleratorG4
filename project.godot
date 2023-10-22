@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="AcceleratorG4"
-run/main_scene="res://Gameplay.tscn"
+run/main_scene="res://Scenes/Gameplay.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 
 [autoload]

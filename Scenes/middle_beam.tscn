@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnxxx7kow2vgq"]
+
+[ext_resource type="Script" path="res://Beam.cs" id="1_wdwrm"]
+[ext_resource type="Material" uid="uid://d0v7rfoshwye1" path="res://Obstacle.tres" id="2_1bsc3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g1s8o"]
+material = ExtResource("2_1bsc3")
+size = Vector3(100, 25, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e1dcn"]
+size = Vector3(100, 25, 5)
+
+[node name="MiddleBeam" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_wdwrm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_g1s8o")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_e1dcn")

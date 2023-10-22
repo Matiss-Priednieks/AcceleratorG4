@@ -1,0 +1,883 @@
+[gd_scene load_steps=35 format=3 uid="uid://bf3avcy4d7p2w"]
+
+[ext_resource type="Script" path="res://SegmentSpawner.cs" id="1_1u42d"]
+[ext_resource type="Script" path="res://Gameplay.cs" id="1_mfn8l"]
+[ext_resource type="Script" path="res://Player.cs" id="2_j827p"]
+[ext_resource type="AudioStream" uid="uid://bwexk5u8o8by2" path="res://Assets/Crash.wav" id="3_b7rs1"]
+[ext_resource type="Theme" uid="uid://bv5iylyvowu3t" path="res://UITheme.tres" id="4_v4org"]
+[ext_resource type="Script" path="res://RegistrationScreen.cs" id="6_2or4y"]
+[ext_resource type="Script" path="res://Menu.cs" id="6_03ev7"]
+[ext_resource type="PackedScene" uid="uid://kcsntwpd5ekg" path="res://Scenes/LinesSegment.tscn" id="6_lchth"]
+[ext_resource type="Texture2D" uid="uid://cdi1b6yn6jn01" path="res://WhiteCircle.png" id="6_mpfm5"]
+[ext_resource type="Script" path="res://LoginScreen.cs" id="6_pjbfu"]
+[ext_resource type="Script" path="res://Leaderboard.cs" id="7_3m2y8"]
+[ext_resource type="FontFile" uid="uid://dk86ck26vy0k" path="res://InclusiveSans-Regular.otf" id="8_fkj2d"]
+[ext_resource type="Texture2D" uid="uid://cux41a4dveard" path="res://loadingSheet.png" id="8_x5jec"]
+[ext_resource type="Script" path="res://LoadingIcon.cs" id="9_ylcw8"]
+[ext_resource type="Script" path="res://Warning.cs" id="12_d2oij"]
+[ext_resource type="Texture2D" uid="uid://d0xbmhvvq0oi" path="res://tempclosebutton.png" id="12_g3tsu"]
+[ext_resource type="Script" path="res://debugMessage.cs" id="15_3v3mm"]
+
+[sub_resource type="Environment" id="1"]
+background_mode = 1
+tonemap_mode = 1
+glow_enabled = true
+glow_intensity = 2.33
+glow_bloom = 0.35
+glow_hdr_threshold = 0.19
+glow_hdr_luminance_cap = 65.64
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+fog_density = 0.03
+adjustment_enabled = true
+adjustment_brightness = 1.36
+adjustment_saturation = 1.5
+
+[sub_resource type="SphereShape3D" id="2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3rso"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 1.35
+
+[sub_resource type="SphereMesh" id="3"]
+material = SubResource("StandardMaterial3D_f3rso")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2ifa"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enpas"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_catan"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2xu2"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vfbc"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8w5fr"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wewh4"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubnrv"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbdr5"]
+atlas = ExtResource("8_x5jec")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlecw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enpas")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_catan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2xu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vfbc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8w5fr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wewh4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubnrv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbdr5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uflvb"]
+bg_color = Color(0.85098, 0.0784314, 0.231373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mx6pm"]
+transparency = 1
+cull_mode = 1
+albedo_color = Color(0.690196, 0.14902, 1, 1)
+metallic = 1.0
+metallic_specular = 0.44
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.101961, 0, 0.270588, 1)
+grow_amount = 0.02
+
+[sub_resource type="TextMesh" id="TextMesh_ju1oc"]
+material = SubResource("StandardMaterial3D_mx6pm")
+text = "How fast
+can you go?"
+font = ExtResource("8_fkj2d")
+font_size = 127
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_mfn8l")
+
+[node name="SegmentSpawner" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_1u42d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("1")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+unique_name_in_owner = true
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2_j827p")
+
+[node name="FP" type="Camera3D" parent="Player"]
+doppler_tracking = 2
+current = true
+near = 0.03
+far = 400.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("3")
+
+[node name="Crash" type="AudioStreamPlayer3D" parent="Player"]
+unique_name_in_owner = true
+stream = ExtResource("3_b7rs1")
+
+[node name="TP" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.984829, 0.173528, 0, -0.173528, 0.984829, 0, 3.46998, 13.875)
+visible = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 106.474, 0)
+light_color = Color(0.682353, 0.678431, 1, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UIContainer" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="GameOver" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -189.0
+offset_top = -94.5
+offset_right = 189.0
+offset_bottom = 94.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_v4org")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CrashMsg" type="Label" parent="CanvasLayer/UIContainer/GameOver/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "You Crashed!
+"
+horizontal_alignment = 1
+
+[node name="Instructions" type="Label" parent="CanvasLayer/UIContainer/GameOver/VBoxContainer"]
+layout_mode = 2
+text = "Esc for Main Menu
+R to Restart"
+horizontal_alignment = 1
+
+[node name="Score" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -132.5
+offset_top = -40.0
+offset_right = 132.5
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_v4org")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f2ifa")
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/Score"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = -13.0
+offset_right = 42.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 40
+text = "Score Here"
+horizontal_alignment = 1
+
+[node name="Menu" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -239.5
+offset_top = -277.0
+offset_right = 239.5
+offset_bottom = 277.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+script = ExtResource("6_03ev7")
+
+[node name="ButtonBox" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu"]
+layout_mode = 2
+offset_left = 37.0
+offset_top = 39.5
+offset_right = 442.0
+offset_bottom = 514.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_v4org")
+
+[node name="Play" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+tooltip_text = "Jump right into it!"
+theme = ExtResource("4_v4org")
+text = "Play"
+
+[node name="Settings" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+text = "Settings"
+
+[node name="LoginSignup" type="HBoxContainer" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_v4org")
+
+[node name="Login" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup"]
+unique_name_in_owner = true
+texture_filter = 3
+custom_minimum_size = Vector2(190, 100)
+layout_mode = 2
+tooltip_text = "Login, logout or see account details"
+theme = ExtResource("4_v4org")
+text = "Account"
+
+[node name="Signup" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup"]
+unique_name_in_owner = true
+texture_filter = 3
+custom_minimum_size = Vector2(190, 100)
+layout_mode = 2
+tooltip_text = "Create an account"
+theme = ExtResource("4_v4org")
+text = "Signup"
+
+[node name="Exit" type="Button" parent="CanvasLayer/UIContainer/Menu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+tooltip_text = "Intentionally crash the game"
+theme = ExtResource("4_v4org")
+text = "Exit"
+
+[node name="Leaderboard" type="PanelContainer" parent="CanvasLayer/UIContainer/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -401.0
+offset_top = 94.0
+offset_right = -526.0
+offset_bottom = -91.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+script = ExtResource("7_3m2y8")
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("4_v4org")
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 26
+text = "Leaderboard"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_v4org")
+
+[node name="User" type="Label" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "User"
+
+[node name="Score" type="Label" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Score"
+
+[node name="ScoreList" type="VBoxContainer" parent="CanvasLayer/UIContainer/Menu/Leaderboard/MarginContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_v4org")
+theme_override_constants/separation = 15
+
+[node name="UpdateLeaderboard" type="Timer" parent="CanvasLayer/UIContainer/Menu/Leaderboard"]
+wait_time = 5.0
+autostart = true
+
+[node name="SettingsMenu" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -239.5
+offset_top = -277.0
+offset_right = 239.5
+offset_bottom = 277.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="ButtonBox" type="VBoxContainer" parent="CanvasLayer/UIContainer/SettingsMenu"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.5
+offset_top = -237.5
+offset_right = 199.5
+offset_bottom = 237.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="StartSpeed" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
+theme = ExtResource("4_v4org")
+disabled = true
+text = "Start Speed"
+
+[node name="Sensitivity" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+text = "Sensitivity"
+
+[node name="Fullscreen" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+tooltip_text = "Not available in alpha! Apologies for the inconvenience."
+theme = ExtResource("4_v4org")
+disabled = true
+text = "Fullscreen"
+
+[node name="Back" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/ButtonBox"]
+texture_filter = 3
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+text = "Back"
+
+[node name="SensitivityMenu" type="VBoxContainer" parent="CanvasLayer/UIContainer/SettingsMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.5
+offset_top = -237.5
+offset_right = 199.5
+offset_bottom = 237.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+layout_mode = 2
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 30
+text = "Sensitivity"
+horizontal_alignment = 1
+
+[node name="SensInput" type="SpinBox" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.05
+alignment = 1
+
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.001
+max_value = 1.0
+step = 0.001
+value = 0.001
+
+[node name="SensBack" type="Button" parent="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu"]
+layout_mode = 2
+text = "Back"
+
+[node name="LoginScreen" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -239.5
+offset_top = -277.0
+offset_right = 239.5
+offset_bottom = 277.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+script = ExtResource("6_pjbfu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/LoginScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v4org")
+
+[node name="UserLabel" type="Label" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme = ExtResource("4_v4org")
+theme_override_font_sizes/font_size = 35
+text = "Guest"
+horizontal_alignment = 1
+
+[node name="LoadingIcon" type="AnimatedSprite2D" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(199, -57.5)
+sprite_frames = SubResource("SpriteFrames_mlecw")
+frame = 3
+frame_progress = 0.71231
+script = ExtResource("9_ylcw8")
+
+[node name="Email" type="LineEdit" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+placeholder_text = "Email"
+caret_blink = true
+
+[node name="Password" type="LineEdit" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+placeholder_text = "Password"
+secret = true
+
+[node name="LoginConfirm" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+theme = ExtResource("4_v4org")
+text = "Login"
+
+[node name="Logout" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+text = "Logout"
+
+[node name="Back" type="Button" parent="CanvasLayer/UIContainer/LoginScreen/VBoxContainer"]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+text = "Back"
+
+[node name="Registration" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -239.5
+offset_top = -277.0
+offset_right = 239.5
+offset_bottom = 277.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_2or4y")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIContainer/Registration"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="EmailInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../Existing")
+focus_neighbor_top = NodePath("../Existing")
+focus_neighbor_right = NodePath("../PasswordInput")
+focus_neighbor_bottom = NodePath("../PasswordInput")
+focus_next = NodePath("../PasswordInput")
+focus_previous = NodePath("../Existing")
+theme = ExtResource("4_v4org")
+placeholder_text = "Email"
+max_length = 320
+select_all_on_focus = true
+caret_blink = true
+
+[node name="PasswordInput" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../EmailInput")
+focus_neighbor_top = NodePath("../EmailInput")
+focus_neighbor_right = NodePath("../ConfirmPassword")
+focus_neighbor_bottom = NodePath("../ConfirmPassword")
+focus_next = NodePath("../ConfirmPassword")
+focus_previous = NodePath("../EmailInput")
+theme = ExtResource("4_v4org")
+placeholder_text = "Password"
+secret = true
+select_all_on_focus = true
+
+[node name="ConfirmPassword" type="LineEdit" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../PasswordInput")
+focus_neighbor_top = NodePath("../PasswordInput")
+focus_neighbor_right = NodePath("../RegisterConfirm")
+focus_neighbor_bottom = NodePath("../RegisterConfirm")
+focus_next = NodePath("../RegisterConfirm")
+focus_previous = NodePath("../PasswordInput")
+theme = ExtResource("4_v4org")
+placeholder_text = "Confirm Password"
+secret = true
+select_all_on_focus = true
+
+[node name="RegisterConfirm" type="Button" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../ConfirmPassword")
+focus_neighbor_top = NodePath("../ConfirmPassword")
+focus_neighbor_right = NodePath("../Existing")
+focus_neighbor_bottom = NodePath("../Existing")
+focus_next = NodePath("../Existing")
+focus_previous = NodePath("../ConfirmPassword")
+theme = ExtResource("4_v4org")
+text = "Register"
+
+[node name="Existing" type="Button" parent="CanvasLayer/UIContainer/Registration/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Have an account?"
+
+[node name="Crosshair" type="TextureRect" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_mpfm5")
+expand_mode = 1
+
+[node name="ErrorPanel" type="Panel" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -201.5
+offset_top = 100.0
+offset_right = 201.5
+offset_bottom = 210.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uflvb")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UIContainer/ErrorPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ErrorMessage" type="Label" parent="CanvasLayer/UIContainer/ErrorPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Invalid Login"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="UsernamePanel" type="Panel" parent="CanvasLayer/UIContainer"]
+layout_mode = 0
+offset_right = 395.0
+offset_bottom = 60.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UIContainer/UsernamePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Username" type="Label" parent="CanvasLayer/UIContainer/UsernamePanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Guest"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="Warning" type="Panel" parent="CanvasLayer/UIContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -405.0
+offset_top = -138.0
+offset_right = 405.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("12_d2oij")
+
+[node name="ExitWarning" type="Button" parent="CanvasLayer/UIContainer/Warning"]
+layout_mode = 1
+offset_right = 65.0
+offset_bottom = 67.0
+icon = ExtResource("12_g3tsu")
+flat = true
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UIContainer/Warning"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -376.5
+offset_top = -96.5
+offset_right = 376.5
+offset_bottom = 96.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/UIContainer/Warning/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "WARNING"
+
+[node name="Label" type="Label" parent="CanvasLayer/UIContainer/Warning/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_fkj2d")
+theme_override_font_sizes/font_size = 30
+text = " Do not use on public network to register accounts. Passwords are currently only encrypted serverside and not clientside, so http requests are not secure. This will not be the case in the finished version."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="debugMessage" type="Label" parent="CanvasLayer/UIContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 15.0
+grow_horizontal = 0
+script = ExtResource("15_3v3mm")
+
+[node name="RegRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
+[node name="LoginRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
+[node name="HighscoreRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
+[node name="LeaderboardRequest" type="HTTPRequest" parent="CanvasLayer"]
+unique_name_in_owner = true
+
+[node name="MainMenuCam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.1394)
+
+[node name="sectionwithstraightlines" parent="." instance=ExtResource("6_lchth")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="sectionwithstraightlines"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -39.7193)
+mesh = SubResource("TextMesh_ju1oc")
+
+[connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Login" to="." method="_on_login_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/LoginSignup/Signup" to="." method="_on_signup_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Menu/ButtonBox/Exit" to="." method="_on_exit_pressed"]
+[connection signal="timeout" from="CanvasLayer/UIContainer/Menu/Leaderboard/UpdateLeaderboard" to="CanvasLayer/UIContainer/Menu/Leaderboard" method="_on_update_leaderboard_timeout"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Sensitivity" to="." method="_on_sensitivity_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/ButtonBox/Back" to="." method="_on_settingsback_pressed"]
+[connection signal="focus_exited" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_focus_exited"]
+[connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensInput" to="." method="_on_sens_text_input_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensSlider" to="." method="_on_sens_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/SettingsMenu/SensitivityMenu/SensBack" to="." method="_on_sens_back_pressed"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Email" to="CanvasLayer/UIContainer/LoginScreen" method="_on_email_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Email" to="CanvasLayer/UIContainer/LoginScreen" method="_on_email_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Password" to="CanvasLayer/UIContainer/LoginScreen" method="_on_password_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Password" to="CanvasLayer/UIContainer/LoginScreen" method="_on_password_text_submitted"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/LoginConfirm" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_confirm_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Logout" to="CanvasLayer/UIContainer/LoginScreen" method="_on_logout_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/LoginScreen/VBoxContainer/Back" to="." method="_on_login_back_pressed"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/NameInput" to="CanvasLayer/UIContainer/Registration" method="_on_name_input_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/EmailInput" to="CanvasLayer/UIContainer/Registration" method="_on_email_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/EmailInput" to="CanvasLayer/UIContainer/Registration" method="_on_email_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/PasswordInput" to="CanvasLayer/UIContainer/Registration" method="_on_password_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/PasswordInput" to="CanvasLayer/UIContainer/Registration" method="_on_password_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="CanvasLayer/UIContainer/Registration" method="_on_confirm_password_text_changed"]
+[connection signal="text_submitted" from="CanvasLayer/UIContainer/Registration/VBoxContainer/ConfirmPassword" to="CanvasLayer/UIContainer/Registration" method="_on_confirm_password_text_submitted"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/RegisterConfirm" to="CanvasLayer/UIContainer/Registration" method="_on_register_confirm_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Registration/VBoxContainer/Existing" to="." method="_on_existing_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIContainer/Warning/ExitWarning" to="CanvasLayer/UIContainer/Warning" method="_on_exit_warning_pressed"]
+[connection signal="request_completed" from="CanvasLayer/RegRequest" to="CanvasLayer/UIContainer/Registration" method="_on_reg_request_request_completed"]
+[connection signal="request_completed" from="CanvasLayer/LoginRequest" to="CanvasLayer/UIContainer/LoginScreen" method="_on_login_request_request_completed"]
+[connection signal="request_completed" from="CanvasLayer/HighscoreRequest" to="CanvasLayer/UIContainer/debugMessage" method="_on_highscore_request_request_completed"]
+[connection signal="request_completed" from="CanvasLayer/LeaderboardRequest" to="CanvasLayer/UIContainer/Menu/Leaderboard" method="_on_leaderboard_request_request_completed"]
